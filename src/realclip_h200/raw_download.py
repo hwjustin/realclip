@@ -86,7 +86,10 @@ def load_bundle(manifest_dir):
     if metadata.get("schema_version") != 1:
         raise ValueError("Unsupported download metadata schema")
     artifacts = metadata.get("artifacts", {})
-    if set(artifacts) != {"dataset.json.gz", "raw_downloads.jsonl.gz"}:
+    expected_artifacts = {"dataset.json.gz", "raw_downloads.jsonl.gz"}
+    if "archive" in metadata:
+        expected_artifacts.add("prepared_archive.json.gz")
+    if set(artifacts) != expected_artifacts:
         raise ValueError("Both authenticated metadata artifacts are required")
     for name, record in artifacts.items():
         path = safe_path(directory, name)
@@ -147,6 +150,108 @@ def load_bundle(manifest_dir):
             or metadata.get("raw_bytes") != sum(row["size_bytes"] for row in entries.values())):
         raise ValueError("Download counts/bytes differ from authenticated metadata")
     return manifest, list(entries.values()), metadata
+
+
+def load_prepared_archive(manifest_dir, manifest, training_entries, metadata):
+    """Validate additional image-only wells without admitting them to training."""
+    if "archive" not in metadata:
+        raise ValueError("This bundle has no all-prepared archive; update the repository first")
+    archive = json.loads(_read_gzip(safe_path(manifest_dir, "prepared_archive.json.gz")))
+    payload = {k: v for k, v in archive.items() if k != "archive_id"}
+    if (archive.get("schema_version") != 1 or archive.get("format") != "realclip-prepared-archive-v1"
+            or archive.get("archive_id") != stable_hash(payload)
+            or archive.get("archive_id") != metadata["archive"].get("archive_id")
+            or archive.get("training_manifest_id") != manifest["manifest_id"]):
+        raise ValueError("Prepared archive identity mismatch")
+    wells = {s["well_id"] for s in manifest["samples"]}
+    ids = {s["sample_id"] for s in manifest["samples"]}
+    wanted, complete, incomplete = {}, 0, 0
+    for sample in archive.get("samples", []):
+        well, sid = sample.get("well_id"), sample.get("sample_id")
+        if (not isinstance(well, str) or not well or well in wells
+                or not isinstance(sid, str) or not sid or sid in ids
+                or sample.get("training_eligible") is not False):
+            raise ValueError("Archive sample duplicates or enters the training cohort")
+        wells.add(well)
+        ids.add(sid)
+        status, text = sample.get("description_status"), sample.get("description")
+        if status == "complete":
+            if (not isinstance(text, str) or not text.strip()
+                    or hashlib.sha256(text.encode()).hexdigest() != sample.get("description_sha256")):
+                raise ValueError("Archival description checksum mismatch")
+            complete += 1
+        elif status == "incomplete" and text is None and sample.get("description_sha256") is None:
+            incomplete += 1
+        else:
+            raise ValueError("Incomplete archival samples must not receive fabricated descriptions")
+        seen = set()
+        for image in sample.get("images", []):
+            relative, sha = image.get("path"), image.get("sha256")
+            key = (str(image.get("site")), image.get("channel"))
+            if (not _sha(sha) or relative != f"images/{sha}.tif" or not key[0].isdigit()
+                    or key[1] not in CHANNELS or key in seen):
+                raise ValueError("Invalid archival image identity/site/channel")
+            seen.add(key)
+            row = {k: image[k] for k in ("path", "sha256", "size_bytes", "url")}
+            if wanted.setdefault(relative, row) != row:
+                raise ValueError("Conflicting archival image mapping")
+        if not seen or seen != {(site, channel) for site, _ in seen for channel in CHANNELS}:
+            raise ValueError("Every archival site requires all five channels")
+    extra, training = {}, {e["path"]: e for e in training_entries}
+    for row in archive.get("images", []):
+        relative, size = row.get("path"), row.get("size_bytes")
+        if relative in extra or relative in training or wanted.get(relative) != row or type(size) is not int or size < 1:
+            raise ValueError("Archive download index must cover only archival images exactly once")
+        validate_url(row.get("url"))
+        extra[relative] = row
+    if set(extra) != set(wanted):
+        raise ValueError("Archive index does not cover every archival image")
+    summary = metadata["archive"]
+    if (summary.get("wells") != complete + incomplete or summary.get("images") != len(extra)
+            or summary.get("complete_descriptions") != complete
+            or summary.get("incomplete_descriptions") != incomplete
+            or summary.get("raw_bytes") != sum(row["size_bytes"] for row in extra.values())):
+        raise ValueError("Archive counts differ from the metadata")
+    expected_all = {"wells": len(wells), "images": len(training) + len(extra),
+                    "raw_bytes": metadata["raw_bytes"] + summary["raw_bytes"]}
+    if metadata.get("all_prepared") != expected_all or archive.get("total_prepared_wells") != len(wells):
+        raise ValueError("Prepared universe counts differ from the training/archive union")
+    return archive, sorted(list(training.values()) + list(extra.values()), key=lambda x: x["path"])
+
+
+def ensure_manifest(root, manifest, metadata, allow_upgrade=False):
+    """Explicit compatible expansion, retaining an authenticated old manifest."""
+    path = safe_path(root, "manifest.json")
+    if not path.exists():
+        atomic_json(path, manifest)
+        return False
+    existing = json.loads(path.read_text(encoding="utf-8"))
+    if existing == manifest:
+        return False
+    if not allow_upgrade:
+        raise ValueError("Data root has an older/different manifest; use --upgrade-manifest for a compatible expansion")
+    old_id = existing.get("manifest_id")
+    if (old_id != stable_hash({k: v for k, v in existing.items() if k != "manifest_id"})
+            or old_id not in metadata.get("compatible_previous_manifest_ids", [])):
+        raise ValueError("The previous dataset is not an authenticated compatible expansion ancestor")
+    for key in ("schema_version", "format", "channels", "preprocessing"):
+        if existing.get(key) != manifest.get(key):
+            raise ValueError("Manifest upgrade changed the image preprocessing or format")
+    old = {s["sample_id"]: s for s in existing["samples"]}
+    new = {s["sample_id"]: s for s in manifest["samples"]}
+    if len(old) != len(existing["samples"]) or any(new.get(sid) != sample for sid, sample in old.items()):
+        raise ValueError("Manifest upgrade removed or changed an existing sample, caption, split or window")
+    if any(sample["split"] != "train" for sid, sample in new.items() if sid not in old):
+        raise ValueError("Manifest upgrade may add only training samples; original holdouts are frozen")
+    backup = safe_path(root, f"manifest_history/{old_id}.json")
+    backup.parent.mkdir(parents=True, exist_ok=True)
+    if backup.exists():
+        if json.loads(backup.read_text()) != existing:
+            raise ValueError("Existing previous-manifest backup differs")
+    else:
+        atomic_json(backup, existing)
+    atomic_json(path, manifest)
+    return True
 
 
 def atomic_json(path, value):
@@ -286,7 +391,8 @@ def benchmark_entries(entries, count):
 
 
 def run_download(manifest_dir, data_root, workers=16, benchmark=None, verify_only=False,
-                 retries=3, timeout=60, max_failures=20, opener=None):
+                 retries=3, timeout=60, max_failures=20, opener=None,
+                 all_prepared=False, upgrade_manifest=False):
     if type(workers) is not int or not 1 <= workers <= 128:
         raise ValueError("workers must be an integer in [1,128]")
     if benchmark is not None and (type(benchmark) is not int or benchmark < 1 or verify_only):
@@ -296,17 +402,18 @@ def run_download(manifest_dir, data_root, workers=16, benchmark=None, verify_onl
     if not math.isfinite(timeout) or timeout <= 0 or type(max_failures) is not int or max_failures < 1:
         raise ValueError("Positive finite timeout and max-failures are required")
     manifest, entries, metadata = load_bundle(manifest_dir)
+    archive = None
+    if all_prepared:
+        archive, entries = load_prepared_archive(manifest_dir, manifest, entries, metadata)
     selected = benchmark_entries(entries, benchmark) if benchmark is not None else entries
     root = Path(data_root).resolve()
     report_name = "raw_benchmark.json" if benchmark is not None else "raw_verify_report.json" if verify_only else "raw_download_report.json"
     with dataset_lock(root):
-        manifest_path = safe_path(root, "manifest.json")
-        if manifest_path.exists():
-            existing = json.loads(manifest_path.read_text(encoding="utf-8"))
-            if existing != manifest:
-                raise ValueError("Data root contains another dataset manifest; choose a new root")
-        else:
-            atomic_json(manifest_path, manifest)
+        upgraded = ensure_manifest(root, manifest, metadata, upgrade_manifest)
+        if archive is not None:
+            atomic_json(safe_path(root, "archive_samples.json"), archive)
+        scope = "all_prepared" if all_prepared else "training"
+        total_raw_bytes = metadata["all_prepared"]["raw_bytes"] if all_prepared else metadata["raw_bytes"]
         started, last_progress = time.monotonic(), 0
         cached = downloaded = network_bytes = completed_bytes = 0
         failures = []
@@ -314,10 +421,12 @@ def run_download(manifest_dir, data_root, workers=16, benchmark=None, verify_onl
         stopped = False
         atomic_json(safe_path(root, report_name), {"schema_version": 1, "status": "running",
                     "manifest_id": manifest["manifest_id"], "pid": os.getpid(),
-                    "total_images": len(entries), "selected_images": len(selected)})
+                    "total_images": len(entries), "selected_images": len(selected),
+                    "download_scope": scope})
         print(json.dumps({"event": "started", "mode": "benchmark" if benchmark else "verify" if verify_only else "download",
                           "selected_images": len(selected), "total_images": len(entries), "workers": workers,
-                          "manifest_id": manifest["manifest_id"]}), flush=True)
+                          "manifest_id": manifest["manifest_id"], "download_scope": scope,
+                          "manifest_upgraded": upgraded}), flush=True)
         with ThreadPoolExecutor(max_workers=workers) as pool:
             pending = {}
 
@@ -365,7 +474,11 @@ def run_download(manifest_dir, data_root, workers=16, benchmark=None, verify_onl
                   "total_images": len(entries), "selected_images": len(selected),
                   "successful_images": successful, "cached_images": cached, "downloaded_images": downloaded,
                   "failed_images": len(failures), "not_attempted_images": len(selected)-successful-len(failures),
-                  "verified_image_bytes": completed_bytes, "total_raw_bytes": metadata["raw_bytes"],
+                  "verified_image_bytes": completed_bytes, "total_raw_bytes": total_raw_bytes,
+                  "download_scope": scope, "training_images": metadata["counts"]["images"],
+                  "training_wells": metadata["counts"]["wells"],
+                  "total_wells": metadata["all_prepared"]["wells"] if all_prepared else metadata["counts"]["wells"],
+                  "manifest_upgraded": upgraded,
                   "network_bytes": network_bytes, "elapsed_seconds": round(elapsed, 4),
                   "network_MB_per_second": round(network_bytes / elapsed / 1e6, 4) if network_bytes else None,
                   "cache_only": network_bytes == 0,
@@ -386,10 +499,13 @@ def main(argv=None):
     parser.add_argument("--retries", type=int, default=3)
     parser.add_argument("--timeout", type=float, default=60)
     parser.add_argument("--max-failures", type=int, default=20, help="Stop scheduling new downloads after this many exhausted failures")
+    parser.add_argument("--all-prepared", action="store_true", help="Also download archival prepared wells; only the approved cohort enters training")
+    parser.add_argument("--upgrade-manifest", action="store_true", help="Allow an authenticated expansion that leaves all prior samples and holdouts unchanged")
     args = parser.parse_args(argv)
     try:
         report = run_download(args.manifest_dir, args.data_root, args.workers, args.benchmark,
-                              args.verify_only, args.retries, args.timeout, args.max_failures)
+                              args.verify_only, args.retries, args.timeout, args.max_failures,
+                              all_prepared=args.all_prepared, upgrade_manifest=args.upgrade_manifest)
     except (OSError, ValueError, RuntimeError) as exc:
         print(json.dumps({"status": "failed", "error": str(exc)}), file=sys.stderr, flush=True)
         return 1

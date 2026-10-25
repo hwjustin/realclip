@@ -9,20 +9,34 @@ needed for training.
 This is a new end-to-end experiment. Previous frozen-feature checkpoints are
 not compatible with it. The original experiments and their data remain intact.
 
-## H200：从公开 S3 测速、下载并训练
+## H200：下载全部 1,806 个已准备样本
 
-下载脚本只需要 Python 3.9 及以上版本的标准库，可以先测速和下载，再安装 PyTorch。它只取
-清单指定的 25,900 张原图，保留全部英文描述、603/66/66 划分和原有预处理窗宽。
-文件按原始 SHA256 校验，已有且正确的文件直接复用，失败下载可以重新运行续传。
-不需要 AWS 账号。原图 URL、校验清单及训练元数据随本仓库提供在 `manifests/`。
+最新数据分为两个范围：
 
-以下示例使用服务器上的 `~/realclip-transfer/data` 和 `models`，因此会复用之前
-通过 SSH 上传到这些位置的文件。选择有至少约 100 GB 可用空间的目录。
-测速结果代表执行命令的服务器节点到 S3 的实际链路；这里还没有实测 H200 的网速。
-切换前在中转电脑按 `Ctrl+C` 停止旧的 rsync 上传；完整上传的图像会继续复用，
-不要让两种传输同时写入同一个数据目录。
+| 范围 | well 数 | TIFF 数 | 原图大小 |
+| --- | ---: | ---: | ---: |
+| 当前训练/验证/测试队列 | 1,206（1,074/66/66） | 42,545 | 98.70 GB |
+| 额外归档：316 个完整描述、284 个描述未完成 | 600 | 21,065 | 48.85 GB |
+| `--all-prepared` 全量下载 | 1,806 | 63,610 | 147.55 GB |
 
-先获取代码。使用新的 `realclip-s3` 目录，可以保留此前从 U 盘解压的 `realclip`：
+沿用全部 treatment sites 的 DNA/RNA/ER/Mito/AGP 五通道；control、Brightfield
+不属于本训练输入。归档样本保存在 `archive_samples.json`，不会进入训练 manifest。
+原验证和测试各 66 个 well 不变，旧 735 个样本的描述、窗宽、图像及划分也不变。
+284 个尚未完成的描述不补写、不伪造。
+
+服务器建议至少预留 200 GB。下载脚本仅用 Python 标准库，不需要先安装 PyTorch
+或 AWS 凭据。它复用 SHA256 正确的旧图片，只下载缺失/损坏的原图，支持 Range 续传。
+切换前停止旧下载/rsync 任务；同一数据目录只运行一个下载任务。
+
+已有本仓库的服务器直接更新：
+
+```bash
+cd "$HOME/realclip-transfer/realclip-s3"
+git pull --ff-only
+mkdir -p logs
+```
+
+首次使用则执行：
 
 ```bash
 mkdir -p "$HOME/realclip-transfer"
@@ -32,115 +46,108 @@ cd realclip-s3
 mkdir -p logs
 ```
 
-如果 `realclip-s3` 已经是 Git 仓库，在该目录执行 `git pull --ff-only` 更新。
-以下命令都从 `realclip-s3/` 执行。
+以下命令均从 `realclip-s3/` 执行。`--upgrade-manifest` 只允许清单声明的兼容扩量：
+它验证所有旧样本完全不变、仅增加训练样本，并将旧清单备份到
+`../data/manifest_history/`。旧图像不会被删除，也无需重传。
 
-先并发下载 100 张图测速；这些图会保留给完整下载复用：
+先下载 100 张样本测速，这些图片会保留给后续全量下载：
 
 ```bash
-python3 scripts/download_raw.py \
-  --data-root ../data --workers 16 --benchmark 100
+python3 scripts/download_raw.py --data-root ../data \
+  --all-prepared --upgrade-manifest --workers 16 --benchmark 100
 cat ../data/raw_benchmark.json
 ```
 
-报告区分缓存文件与实际网络流量，速度包含下载、校验和写盘开销。如果实际网络
-字节数为零，说明样本已全部缓存，这次运行不能作为网络测速。
+`network_MB_per_second` 是实际收到的 HTTP 数据量除以耗时，包含校验/写盘开销。
+`cache_only: true` 表示全命中缓存，本次不能作为网络测速。H200 的速度需在该节点实测。
 
-测速正常结束后，后台下载剩余原图。SSH 断开后任务继续运行：
+后台补齐全部 63,610 张原图：
 
 ```bash
-nohup python3 -u scripts/download_raw.py \
-  --data-root ../data --workers 16 \
-  > logs/raw-download.log 2>&1 < /dev/null &
+nohup python3 -u scripts/download_raw.py --data-root ../data \
+  --all-prepared --upgrade-manifest --workers 16 \
+  > logs/raw-download-all.log 2>&1 < /dev/null &
 
-tail -f logs/raw-download.log
+tail -f logs/raw-download-all.log
 ```
 
-`Ctrl+C` 只退出日志查看。下载中断后重新运行同一条下载命令；同一数据目录
-只运行一个下载任务。等待完整下载任务正常结束，再检查报告：
+按 `Ctrl+C` 只退出日志查看；下载继续。中断后重新运行相同命令。
+完整任务结束后检查报告（成功下载即已逐图核对大小和 SHA256）：
 
 ```bash
-python3 - <<'PY'
+python3 - <<'PYCODE'
 import json
 from pathlib import Path
-report = json.loads(Path("../data/raw_download_report.json").read_text())
-manifest = json.loads(Path("../data/manifest.json").read_text())
-assert report["status"] == "complete", report
-assert report["failed_images"] == 0, report
-assert report["successful_images"] == 25900, report
-assert report["manifest_id"] == manifest["manifest_id"]
-print("25,900 张原图已下载或复用，并通过校验")
-PY
+r = json.loads(Path("../data/raw_download_report.json").read_text())
+m = json.loads(Path("manifests/metadata.json").read_text())
+assert r["status"] == "complete", r
+assert r["download_scope"] == "all_prepared", r
+assert r["failed_images"] == 0, r
+assert r["successful_images"] == m["all_prepared"]["images"] == 63610, r
+assert r["manifest_id"] == m["manifest_id"]
+print("1,806 个样本的原图已全部下载/复用并通过校验；训练队列仍为 1,206 个")
+PYCODE
 ```
 
-如需单独重新校验全部原图，可执行：
+单独重新校验全部图片（不联网）可执行：
 
 ```bash
-python3 scripts/download_raw.py --data-root ../data --verify-only
+python3 scripts/download_raw.py --data-root ../data --all-prepared --verify-only
 ```
 
-训练需要 Python 3.12、兼容驱动的 CUDA PyTorch，以及已经分配到的 H200。
-在 Slurm 等集群中，训练命令应在 GPU 作业内执行。安装依赖需要可访问的软件源
-或已经准备好的离线依赖；本仓库和 U 盘包不包含 Python 环境。
+不加 `--all-prepared` 时，仅下载训练/验证/测试队列的 42,545 张图。
+
+## 在扩量数据上训练
+
+训练仍是完整 DINOv2 + BiomedCLIP 文本塔双侧全解冻。需要 Python 3.12、兼容驱动的
+CUDA PyTorch 和已分配的 H200；Slurm 集群在 GPU 作业内启动训练。
+安装需要可访问的软件源或已备好的离线依赖。
 
 ```bash
 python3.12 -m venv .venv
 source .venv/bin/activate
 python -m pip install -e .
-
 nvidia-smi
-python - <<'PY'
+python - <<'PYCODE'
 import torch
-print("PyTorch:", torch.__version__)
 assert torch.cuda.is_available(), "CUDA unavailable"
 print("GPU:", torch.cuda.get_device_name(0))
 assert torch.cuda.is_bf16_supported(), "BF16 unavailable"
-PY
+PYCODE
 ```
 
-模型来自固定版本的公开 Hugging Face 仓库。模型尚未上传时执行：
+模型尚未上传时，从固定的公开 Hugging Face 版本下载：
 
 ```bash
 python -m realclip_h200.download_models --model-root ../models
 ```
 
-如果两个完整模型目录已从 U 盘上传并通过校验，则用本地文件登记：
-
-```bash
-python -m realclip_h200.download_models --model-root ../models \
-  --local-dino ../models/dinov2-small \
-  --local-biomedclip ../models/biomedclip
-```
-
-先运行两步完整双塔训练，使用独立输出目录：
+已有完整且校验过的两个模型目录时，可使用下文的本地登记命令。
+扩量后的数据身份已改变，使用新的运行目录，不直接续训旧 735 样本的断点：
 
 ```bash
 python -u -m realclip_h200.train \
   --config configs/h200.json --data-root ../data --model-root ../models \
-  --output runs/h200-smoke-s3 --smoke-steps 2
-```
+  --output runs/h200-smoke-v2 --smoke-steps 2
 
-测试正常结束后正式训练。默认两边编码器全部解冻、BF16、20 epochs：
-
-```bash
 nohup .venv/bin/python -u -m realclip_h200.train \
   --config configs/h200.json --data-root ../data --model-root ../models \
-  --output runs/h200-full \
-  > logs/h200-full.log 2>&1 < /dev/null &
+  --output runs/h200-expanded-v2 \
+  > logs/h200-expanded-v2.log 2>&1 < /dev/null &
 
-tail -f logs/h200-full.log
+tail -f logs/h200-expanded-v2.log
 ```
 
-如果 `runs/h200-full` 已有训练断点，按下面的续训命令恢复，而不是重新初始化。
-`best.pt` 按验证集选出；测试集只在训练完成并固定配置后显式评估。
+归档的 600 个样本不会被训练读取。默认 BF16、20 epochs；best.pt 仍由原 66 验证 well 选择。
 
 ## Data and model
 
-The initial portable snapshot contains **735 wells: 603 train, 66 validation,
-66 test**, and 25,900 original uint16 treatment TIFFs, totalling
-60,014,495,288 bytes before archive compression. It preserves the existing
-plate and compound-parent separation. New descriptions still being generated
-are not included in this fixed snapshot.
+The current portable training snapshot contains **1,206 wells: 1,074 train,
+66 validation, 66 test**, and 42,545 original uint16 treatment TIFFs, totalling
+98,697,986,392 bytes. The optional prepared archive adds 600 wells and 21,065
+images, so all 1,806 prepared wells total 147,548,160,295 bytes. Archival wells
+never become contrastive training examples. The previous 735-well snapshot is
+an authenticated expansion ancestor; its samples and holdouts are unchanged.
 
 Each well uses all available sites and five channels in the fixed order
 DNA, RNA, ER, Mito, AGP. The original per-well, per-channel intensity windows

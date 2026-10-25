@@ -275,3 +275,118 @@ def test_partial_hardlink_cannot_modify_another_file(tmp_path, local_server):
     with pytest.raises(raw.DownloadError, match="hardlink"):
         raw.download_file(entries[0], root, opener=opener)
     assert outside.read_bytes() == b"original bytes" and not state["requests"]
+
+
+def add_archive(directory, manifest, entries, state, complete=False):
+    text = "Archival description." if complete else None
+    images, extra = [], []
+    for channel in raw.CHANNELS:
+        body = ("archival " + channel).encode() * 100
+        sha = hashlib.sha256(body).hexdigest()
+        url = f"https://{raw.HOST}/cpg0016-jump/archive/{channel}.tif"
+        row = {"path": f"images/{sha}.tif", "sha256": sha, "size_bytes": len(body), "url": url}
+        extra.append(row)
+        images.append({**row, "site": "1", "channel": channel})
+        state["bodies"][urlsplit(url).path] = body
+    sample = {"sample_id": "archival", "well_id": "archive|plate|A01", "training_eligible": False,
+              "description_status": "complete" if complete else "incomplete", "description": text,
+              "description_sha256": hashlib.sha256(text.encode()).hexdigest() if text else None,
+              "images": images}
+    payload = {"schema_version": 1, "format": "realclip-prepared-archive-v1",
+               "training_manifest_id": manifest["manifest_id"], "total_prepared_wells": 4,
+               "samples": [sample], "images": extra}
+    archive = {**payload, "archive_id": raw.stable_hash(payload)}
+    path = directory / "prepared_archive.json.gz"
+    path.write_bytes(gzip.compress(json.dumps(archive).encode(), mtime=0))
+    metadata_path = directory / "metadata.json"
+    metadata = json.loads(metadata_path.read_text())
+    metadata["artifacts"][path.name] = {"sha256": raw.hash_file(path), "size_bytes": path.stat().st_size}
+    size = sum(e["size_bytes"] for e in extra)
+    metadata["archive"] = {"archive_id": archive["archive_id"], "wells": 1, "images": 5,
+                           "raw_bytes": size, "complete_descriptions": int(complete),
+                           "incomplete_descriptions": int(not complete)}
+    metadata["all_prepared"] = {"wells": 4, "images": len(entries) + 5,
+                                "raw_bytes": metadata["raw_bytes"] + size}
+    metadata_path.write_text(json.dumps(metadata))
+    return archive
+
+
+@pytest.mark.parametrize("complete", [False, True])
+def test_all_prepared_downloads_archive_without_adding_training_samples(tmp_path, local_server, complete):
+    directory, root, manifest, entries, state, opener = setup(tmp_path, local_server)
+    archive = add_archive(directory, manifest, entries, state, complete)
+    primary = raw.run_download(directory, root, workers=2, opener=opener)
+    assert primary["successful_images"] == 15 and primary["download_scope"] == "training"
+    assert not (root / "archive_samples.json").exists()
+    all_data = raw.run_download(directory, root, workers=2, opener=opener, all_prepared=True)
+    assert all_data["status"] == "complete" and all_data["successful_images"] == 20
+    assert all_data["cached_images"] == 15 and all_data["downloaded_images"] == 5
+    assert all_data["training_wells"] == 3 and all_data["total_wells"] == 4
+    assert json.loads((root / "manifest.json").read_text()) == manifest
+    assert json.loads((root / "archive_samples.json").read_text()) == archive
+    assert len(state["requests"]) == 20
+
+
+def test_all_prepared_requires_a_bundled_archive(tmp_path, local_server):
+    directory, root, _, _, _, opener = setup(tmp_path, local_server)
+    with pytest.raises(ValueError, match="no all-prepared archive"):
+        raw.run_download(directory, root, opener=opener, all_prepared=True)
+    assert not root.exists()
+
+
+def test_manifest_expansion_is_explicit_authenticated_and_preserves_previous_data(tmp_path):
+    directory = tmp_path / "metadata"
+    new, _, _ = fixture_bundle(directory, wells=4)
+    old = {**new, "samples": new["samples"][:3]}
+    old["manifest_id"] = raw.stable_hash({k: v for k, v in old.items() if k != "manifest_id"})
+    root = tmp_path / "data"
+    root.mkdir()
+    raw.atomic_json(root / "manifest.json", old)
+    metadata = {"compatible_previous_manifest_ids": [old["manifest_id"]]}
+    with pytest.raises(ValueError, match="upgrade-manifest"):
+        raw.ensure_manifest(root, new, metadata)
+    with pytest.raises(ValueError, match="authenticated"):
+        raw.ensure_manifest(root, new, {}, True)
+    assert json.loads((root / "manifest.json").read_text()) == old
+    assert raw.ensure_manifest(root, new, metadata, True)
+    assert json.loads((root / "manifest.json").read_text()) == new
+    assert json.loads((root / "manifest_history" / (old["manifest_id"] + ".json")).read_text()) == old
+    assert raw.ensure_manifest(root, new, metadata, True) is False
+
+
+@pytest.mark.parametrize("change", ["description", "holdout", "remove", "preprocessing"])
+def test_manifest_expansion_refuses_changed_samples_or_new_holdouts(tmp_path, change):
+    directory = tmp_path / "metadata"
+    new, _, _ = fixture_bundle(directory, wells=4)
+    old = json.loads(json.dumps({**new, "samples": new["samples"][:3]}))
+    old["manifest_id"] = raw.stable_hash({k: v for k, v in old.items() if k != "manifest_id"})
+    metadata = {"compatible_previous_manifest_ids": [old["manifest_id"]]}
+    if change == "description":
+        new["samples"][0]["description"] = "Different original text"
+    elif change == "holdout":
+        new["samples"][-1]["split"] = "val"
+    elif change == "remove":
+        new["samples"] = new["samples"][1:]
+    else:
+        new["preprocessing"] = {"changed": True}
+    root = tmp_path / "data"
+    root.mkdir()
+    raw.atomic_json(root / "manifest.json", old)
+    with pytest.raises(ValueError, match="changed|removed|only training"):
+        raw.ensure_manifest(root, new, metadata, True)
+    assert json.loads((root / "manifest.json").read_text()) == old
+
+
+def test_archive_cannot_admit_itself_to_training(tmp_path, local_server):
+    directory, _, manifest, entries, state, _ = setup(tmp_path, local_server)
+    add_archive(directory, manifest, entries, state)
+    path = directory / "prepared_archive.json.gz"
+    archive = json.loads(gzip.decompress(path.read_bytes()))
+    archive["samples"][0]["training_eligible"] = True
+    archive["archive_id"] = raw.stable_hash({k: v for k, v in archive.items() if k != "archive_id"})
+    path.write_bytes(gzip.compress(json.dumps(archive).encode(), mtime=0))
+    metadata = json.loads((directory / "metadata.json").read_text())
+    metadata["artifacts"][path.name] = {"sha256": raw.hash_file(path), "size_bytes": path.stat().st_size}
+    metadata["archive"]["archive_id"] = archive["archive_id"]
+    with pytest.raises(ValueError, match="enters the training"):
+        raw.load_prepared_archive(directory, manifest, entries, metadata)

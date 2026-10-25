@@ -124,3 +124,16 @@ def test_source_pairing_receipt_is_authenticated(tmp_path):
     write_json(pairing_path, pairing)
     with pytest.raises(ValueError, match="pairing.json checksum"):
         exporter.build_downloads(portable_path, source_path)
+
+
+def test_sealed_legacy_pairing_alias_and_missing_byte_counts(tmp_path):
+    source_path, portable_path, _, source, portable, pairing = fixture(tmp_path)
+    pairing_path = tmp_path / "pairings" / "compound.json"
+    pairing_path.parent.mkdir()
+    source["samples"][0]["provenance"] = {"compound_id": "compound", "files": {}}
+    for image in pairing["images"]:
+        image.pop("raw_bytes")
+    refresh(source_path, portable_path, pairing_path, source, portable, pairing)
+    metadata = exporter.prepare(portable_path, source_path, tmp_path / "export")
+    assert metadata["counts"]["images"] == 5
+    assert metadata["raw_bytes"] == sum(Path(image["raw_path"]).stat().st_size for image in pairing["images"])

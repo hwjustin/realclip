@@ -2,10 +2,10 @@
 
 Validated on the source machine on 2026-10-25 using Python 3.12 and the pinned
 dependencies in `pyproject.toml`. The H200 host has not been benchmarked yet.
-The complete package test suite passed: **59 tests**.
+The complete package test suite passed: **73 tests** for the all-prepared revision.
 
 The direct-S3 path uses the same frozen dataset identity and descriptions as
-the portable transfer package. All 25,900 raw-image entries were matched to
+the portable transfer package. The original 25,900 raw-image entries were matched to
 their original public URL, SHA256, and byte count through 735 source pairing
 records; there were no missing entries or conflicting mappings. Original TIFF
 bytes are downloaded without re-encoding. The raw payload totals
@@ -58,3 +58,14 @@ AdamW update with an image microbatch of one on an RTX 4070 Ti SUPER.
 These are source-machine smoke-test measurements, not H200 throughput or
 training-quality results. Full-epoch validation and held-out test performance
 remain to be measured on the training machine.
+
+The expanded snapshot preserves all 735 previous portable sample objects exactly,
+including captions, windows, images and splits, and adds 471 training wells.
+The training cohort is 1,074/66/66 with 42,545 images. Prepared-well archival
+metadata separately covers 600 excluded/incomplete wells and 21,065 images.
+The full download union covers all 1,806 prepared wells, 63,610 images and
+147,548,160,295 bytes; 284 incomplete captions remain absent. Explicit manifest
+upgrade keeps a backup and rejects changed/removed old samples or new holdouts.
+Regression tests cover archive isolation, compatible upgrades and refusal of
+caption/preprocessing/split changes. All-prepared metadata contains no local
+source-machine paths, provider requests or credentials.

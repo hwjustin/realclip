@@ -76,11 +76,15 @@ def build_downloads(portable_path: Path, source_path: Path) -> tuple[dict, list[
         if hashlib.sha256(sample["description"].encode()).hexdigest() != sample["description_sha256"]:
             raise ValueError("Description SHA256 mismatch")
         provenance = original.get("provenance", {}).get("files", {})
-        candidates = [resolved(name, source_path.parent) for name in provenance if Path(name).name == "pairing.json"]
+        pairing_names = [name for name in provenance
+                         if Path(name).name == "pairing.json"
+                         or (Path(name).parent.name == "pairings"
+                             and Path(name).stem == original["provenance"].get("compound_id"))]
+        candidates = [resolved(name, source_path.parent) for name in pairing_names]
         if len(candidates) != 1:
             raise ValueError("Each source sample needs exactly one recorded pairing.json")
         pairing_path = candidates[0]
-        expected = next(value for name, value in provenance.items() if Path(name).name == "pairing.json")
+        expected = provenance[pairing_names[0]]
         if file_hash(pairing_path) != expected:
             raise ValueError("Source pairing.json checksum mismatch")
         pairing = json.loads(pairing_path.read_text(encoding="utf-8"))
@@ -112,6 +116,10 @@ def build_downloads(portable_path: Path, source_path: Path) -> tuple[dict, list[
                     or image["site"] != old["site"] or image["channel"] != old["channel"]):
                 raise ValueError("Public raw image bytes or treatment identity differ")
             size = record["size_bytes"]
+            if size is None:
+                if file_hash(path) != old["sha256"]:
+                    raise ValueError("Legacy raw image checksum mismatch")
+                size = path.stat().st_size
             if type(size) is not int or size <= 0 or path.stat().st_size != size:
                 raise ValueError("Raw image byte count mismatch")
             if image["path"] != f"images/{image['sha256']}.tif":
