@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "realclip-h200"
+version = "0.1.0"
+description = "End-to-end well-level DINOv2 and BiomedCLIP text contrastive training"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "torch==2.13.0",
+  "torchvision==0.28.0",
+  "transformers==4.57.6",
+  "open-clip-torch==3.3.0",
+  "timm==1.0.30",
+  "numpy==2.5.4",
+  "pillow==12.3.0",
+  "huggingface-hub==0.36.2",
+  "safetensors==0.8.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==9.1.1"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/realclip_h200"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+

@@ -1,0 +1,18 @@
+{
+  "epochs": 20,
+  "well_batch_size": 8,
+  "image_microbatch": 32,
+  "eval_well_batch_size": 8,
+  "backbone_lr": 0.00001,
+  "head_lr": 0.0001,
+  "weight_decay": 0.01,
+  "warmup_fraction": 0.1,
+  "grad_clip_norm": 1.0,
+  "embedding_dim": 128,
+  "dropout": 0.1,
+  "precision": "bf16",
+  "gradient_checkpointing": true,
+  "num_workers": 0,
+  "seed": 42,
+  "checkpoint_every_steps": 100
+}
