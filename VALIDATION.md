@@ -2,6 +2,34 @@
 
 Validated on the source machine on 2026-10-25 using Python 3.12 and the pinned
 dependencies in `pyproject.toml`. The H200 host has not been benchmarked yet.
+The complete package test suite passed: **59 tests**.
+
+The direct-S3 path uses the same frozen dataset identity and descriptions as
+the portable transfer package. All 25,900 raw-image entries were matched to
+their original public URL, SHA256, and byte count through 735 source pairing
+records; there were no missing entries or conflicting mappings. Original TIFF
+bytes are downloaded without re-encoding. The raw payload totals
+60,014,495,288 bytes. Download scripts do not require PyTorch or AWS credentials.
+
+The repository includes a benchmark command for a small concurrent download.
+Its network-byte counter excludes cached files, and its elapsed time includes
+verification and disk writes. The rate measured on the target server remains
+unknown until that command is run there. Source-machine upload measurements
+and the GPU smoke test below are separate from that measurement.
+
+Downloader regression tests use a local HTTP server, covering valid Range
+resume, a server that ignores Range, incorrect Content-Range, interrupted
+responses and retries, checksum failure without replacing existing data,
+benchmark-to-full cache reuse, verification with no network traffic,
+cross-process locking, stale-report replacement, failure exit status, and
+path/URL validation. Metadata-export tests cover missing or conflicting
+source mappings, unchanged captions and split identities, and deterministic
+compressed artifacts. Loading the real 735-well metadata with system Python
+was also checked without importing PyTorch. The README's Bash blocks passed
+`bash -n` syntax checking.
+Two actual public S3 TIFF downloads also passed their frozen byte counts and
+SHA256 checksums on the source machine. They are a connectivity/integrity
+smoke test, not a measurement of the H200 server's download performance.
 
 The test suite covers complete encoder unfreezing and optimizer coverage,
 gradients through every view of variable-site wells, equivalence to standard
