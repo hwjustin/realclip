@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "description": "Unmodified original MoA scripts, tests and their transitive wellclip helpers. No experiment data or model weights included.",
+  "files": [
+    {
+      "source": "CLIP/scripts/audit_moa_lineage.py",
+      "destination": "moa/CLIP/scripts/audit_moa_lineage.py",
+      "sha256": "55bee44b44f4ede633309e4b4dd4c5dd4244072b11a5f1ebb6cdece1e989524b"
+    },
+    {
+      "source": "CLIP/scripts/diagnose_expansion_moa_cross.py",
+      "destination": "moa/CLIP/scripts/diagnose_expansion_moa_cross.py",
+      "sha256": "4efb2724c1c386ebb82dcc5a2683b9fc07a9691847aa8d344b27ddde87e7d07a"
+    },
+    {
+      "source": "CLIP/scripts/extract_moa_supplemental.py",
+      "destination": "moa/CLIP/scripts/extract_moa_supplemental.py",
+      "sha256": "a383cc83b2abc79409442fecd9b111de85bdd4781bb7aec4a29a1a1d22564c22"
+    },
+    {
+      "source": "CLIP/scripts/finalize_expanded_moa_probe.py",
+      "destination": "moa/CLIP/scripts/finalize_expanded_moa_probe.py",
+      "sha256": "49929eb4e7fd3c86236f8752eae405be84af3239a78052a763704f37ffb9bdb8"
+    },
+    {
+      "source": "CLIP/scripts/precompute_expanded_moa.py",
+      "destination": "moa/CLIP/scripts/precompute_expanded_moa.py",
+      "sha256": "da0a589fb77802b6a68570f2b37dbe7665e7e78f21c3e773bf89ff65182a34d9"
+    },
+    {
+      "source": "CLIP/scripts/predict_moa_capacity_supplemental.py",
+      "destination": "moa/CLIP/scripts/predict_moa_capacity_supplemental.py",
+      "sha256": "c8ad24225a1ab17cc0edcd2acb123806dfebf86657f6d1e246c3a57ebfad7047"
+    },
+    {
+      "source": "CLIP/scripts/prepare_expanded_moa_probe.py",
+      "destination": "moa/CLIP/scripts/prepare_expanded_moa_probe.py",
+      "sha256": "31ff8432aef78d163bb88b724584e239676c691755fe7e91be084c0a1d89a6b5"
+    },
+    {
+      "source": "CLIP/scripts/prepare_moa_probe.py",
+      "destination": "moa/CLIP/scripts/prepare_moa_probe.py",
+      "sha256": "7d2d9f053bd4d4ad1501631207efeeaf3e9e09436bbdd9b79bed206223b83aff"
+    },
+    {
+      "source": "CLIP/scripts/prepare_supplemental_moa_probe.py",
+      "destination": "moa/CLIP/scripts/prepare_supplemental_moa_probe.py",
+      "sha256": "edb5bcd3aa598fa96c13962b817b69fb4ec7e4acc00740c887fff8fd9a0b4cd7"
+    },
+    {
+      "source": "CLIP/scripts/render_expanded_moa_report.py",
+      "destination": "moa/CLIP/scripts/render_expanded_moa_report.py",
+      "sha256": "8e4be62b95b3df80dfa874cdda56e2d2a0913b286b77b65d2163c0e6ce676ae0"
+    },
+    {
+      "source": "CLIP/scripts/render_moa_probe_report.py",
+      "destination": "moa/CLIP/scripts/render_moa_probe_report.py",
+      "sha256": "9831b0a405e2a7bb580351b398ca7b4f60ed12d2430e294ec946f3252290a7ba"
+    },
+    {
+      "source": "CLIP/scripts/run_dimension_moa_probe.py",
+      "destination": "moa/CLIP/scripts/run_dimension_moa_probe.py",
+      "sha256": "6454b3be17a07b064fd4b31b1d5a6746c30d50f2c5832e0bf43fc0ad0ff1b953"
+    },
+    {
+      "source": "CLIP/scripts/run_direct256_moa_probe.py",
+      "destination": "moa/CLIP/scripts/run_direct256_moa_probe.py",
+      "sha256": "ce8a7f41652598cd0db64126f42453af76d11fdbca85a7ddcb75cafbe990df48"
+    },
+    {
+      "source": "CLIP/scripts/run_expanded_moa_probe.py",
+      "destination": "moa/CLIP/scripts/run_expanded_moa_probe.py",
+      "sha256": "d56908f60047b622435b07146c2d7ce4341e7a28dab7e03d74451c534b8ece8b"
+    },
+    {
+      "source": "CLIP/scripts/run_finetune_moa_probe.py",
+      "destination": "moa/CLIP/scripts/run_finetune_moa_probe.py",
+      "sha256": "e363ebbc68580d68253e9e628367f90b4fdb1931f1bae42765544393bf933b3f"
+    },
+    {
+      "source": "CLIP/scripts/run_full_biomed_moa_probe.py",
+      "destination": "moa/CLIP/scripts/run_full_biomed_moa_probe.py",
+      "sha256": "ca7707a385983b131a8d1d8998157cd63ab78d6fcb6221cc0f056654b41d5a67"
+    },
+    {
+      "source": "CLIP/scripts/run_joint_dimension_moa_probe.py",
+      "destination": "moa/CLIP/scripts/run_joint_dimension_moa_probe.py",
+      "sha256": "d8f85834c4ee0bf90478f57df2127835a7dd0c1daabff3d7f2a6389798b93d25"
+    },
+    {
+      "source": "CLIP/scripts/run_moa_capacity_probe.py",
+      "destination": "moa/CLIP/scripts/run_moa_capacity_probe.py",
+      "sha256": "48ace963dae91d03d1bc7606b877122de9362234f0bc2f71e91c0d40ba4be96a"
+    },
+    {
+      "source": "CLIP/scripts/run_moa_linear_probe.py",
+      "destination": "moa/CLIP/scripts/run_moa_linear_probe.py",
+      "sha256": "d1647b08349636b889178aed2b7ee3953806fade0f8898c7a63cdad5bda7868f"
+    },
+    {
+      "source": "CLIP/scripts/run_sample_expansion_moa.py",
+      "destination": "moa/CLIP/scripts/run_sample_expansion_moa.py",
+      "sha256": "714401027d65896ce24a8f00a85998ce5f7d2387abacd7dd150e47a1fc6b6abb"
+    },
+    {
+      "source": "CLIP/scripts/summarize_expanded_moa_probe.py",
+      "destination": "moa/CLIP/scripts/summarize_expanded_moa_probe.py",
+      "sha256": "a28880d5e80894c244fd19bb500413fb65c8879eb37ec099f8cfc9e2138f5733"
+    },
+    {
+      "source": "CLIP/scripts/summarize_moa_probe.py",
+      "destination": "moa/CLIP/scripts/summarize_moa_probe.py",
+      "sha256": "038a43021dbde9204b13cf7cf4035a92be5850c5f2fe2845a13817c01861fd81"
+    },
+    {
+      "source": "CLIP/scripts/verify_expanded_moa_probe.py",
+      "destination": "moa/CLIP/scripts/verify_expanded_moa_probe.py",
+      "sha256": "db8f11639ba8caee3901b9d89b1e38ccb14f943b5ef7d8d17d910a6a0d71a1fd"
+    },
+    {
+      "source": "CLIP/scripts/verify_moa_probe.py",
+      "destination": "moa/CLIP/scripts/verify_moa_probe.py",
+      "sha256": "462fea48154de17a4d0117571bda831989e5e1438236c393947c34ba5b130572"
+    },
+    {
+      "source": "CLIP/tests/test_direct256_moa_probe.py",
+      "destination": "moa/CLIP/tests/test_direct256_moa_probe.py",
+      "sha256": "7a86e349a9fd5d015c15f57d1996d2d054f7c2f45134f47665b88cd3cb5cb736"
+    },
+    {
+      "source": "CLIP/tests/test_expanded_moa_cohort.py",
+      "destination": "moa/CLIP/tests/test_expanded_moa_cohort.py",
+      "sha256": "d9cf8f4ac16a38f784134dfde256304a3de1212df52e219c7c8c5e182e6811c0"
+    },
+    {
+      "source": "CLIP/tests/test_expanded_moa_statistics.py",
+      "destination": "moa/CLIP/tests/test_expanded_moa_statistics.py",
+      "sha256": "b12cec730884d4c8d8542ffae5e410a06d3dc0717e44e53a2ab3479cf8fb6b50"
+    },
+    {
+      "source": "CLIP/tests/test_full_biomed_moa_probe.py",
+      "destination": "moa/CLIP/tests/test_full_biomed_moa_probe.py",
+      "sha256": "a1a7370ee549697b46f95fdf1ce3d92f096d8f884375bb8c9f3f8d36ed8401d8"
+    },
+    {
+      "source": "CLIP/tests/test_moa_capacity_probe.py",
+      "destination": "moa/CLIP/tests/test_moa_capacity_probe.py",
+      "sha256": "d6665324dee6b737ba637136e7fb8aa9d71b8d06b88f291f56ced59035df4dbb"
+    },
+    {
+      "source": "CLIP/tests/test_moa_cohort.py",
+      "destination": "moa/CLIP/tests/test_moa_cohort.py",
+      "sha256": "a615e49e429416ec63e4b813affc2f8906138a4548c6d5fd23ee5f7425f155cc"
+    },
+    {
+      "source": "CLIP/tests/test_moa_linear_design.py",
+      "destination": "moa/CLIP/tests/test_moa_linear_design.py",
+      "sha256": "515151c492dbee3fd4b1e2eae13d5fe590969518a4bf598b74fc7d5c149e1e9a"
+    },
+    {
+      "source": "CLIP/tests/test_moa_statistics.py",
+      "destination": "moa/CLIP/tests/test_moa_statistics.py",
+      "sha256": "b82dbee037c3be46062acf3ae48e4c38dbefa6e8073ae147a400fe35135399e9"
+    },
+    {
+      "source": "CLIP/tests/test_sample_expansion_moa.py",
+      "destination": "moa/CLIP/tests/test_sample_expansion_moa.py",
+      "sha256": "85de64dc8dadeeb2a5ce47ec2f956b2aa8cfcef796267fe6abca68933956fae7"
+    },
+    {
+      "source": "CLIP/src/wellclip/__init__.py",
+      "destination": "moa/CLIP/src/wellclip/__init__.py",
+      "sha256": "a42b81a688418e27dea84ddb25a9438d04265ff6f753b0c24889f287c4906d6a"
+    },
+    {
+      "source": "CLIP/src/wellclip/common.py",
+      "destination": "moa/CLIP/src/wellclip/common.py",
+      "sha256": "3a2f8d0f16a8774485402bef5221b670e165b941cdcce18d05cc3b75049f05e9"
+    },
+    {
+      "source": "CLIP/src/wellclip/diagnostics.py",
+      "destination": "moa/CLIP/src/wellclip/diagnostics.py",
+      "sha256": "f90c231475dd02e24f9fa42369dcc1e3808ad709a781d4057a32e830c79287af"
+    },
+    {
+      "source": "CLIP/src/wellclip/encoders.py",
+      "destination": "moa/CLIP/src/wellclip/encoders.py",
+      "sha256": "eb39d7eea277ea47de139da6c48775e9e77c24b5a9502ac3ea4ed468e980c801"
+    },
+    {
+      "source": "CLIP/src/wellclip/evaluation.py",
+      "destination": "moa/CLIP/src/wellclip/evaluation.py",
+      "sha256": "f532383b5bcdff779e9fc21b900b489dcac1410810b4404c81c49e40be870d0c"
+    },
+    {
+      "source": "CLIP/src/wellclip/features.py",
+      "destination": "moa/CLIP/src/wellclip/features.py",
+      "sha256": "64780224c60b945818dcfa5e30999e524c16e50f9f17e4c9c427aae0dcb72316"
+    },
+    {
+      "source": "CLIP/src/wellclip/finetune_backbone.py",
+      "destination": "moa/CLIP/src/wellclip/finetune_backbone.py",
+      "sha256": "f18b9cefaea29e1e836fccf9b2fe2355f32302cd0faa0b129f3511d81cd6d9ab"
+    },
+    {
+      "source": "CLIP/src/wellclip/finetune_cache.py",
+      "destination": "moa/CLIP/src/wellclip/finetune_cache.py",
+      "sha256": "607ed15af28e38c29fe8d2945507fd5b8fc473f0f482c873d7541f632a3ca1e6"
+    },
+    {
+      "source": "CLIP/src/wellclip/finetune_evaluation.py",
+      "destination": "moa/CLIP/src/wellclip/finetune_evaluation.py",
+      "sha256": "cc7f63e8017820cb7c42231c380681dd560d8ed7310bf8b299e0beded0c89e03"
+    },
+    {
+      "source": "CLIP/src/wellclip/finetune_training.py",
+      "destination": "moa/CLIP/src/wellclip/finetune_training.py",
+      "sha256": "eec7a9c893457e638ccc60d39293031108e83bb59cf2fdc58039fd4fc630dca6"
+    },
+    {
+      "source": "CLIP/src/wellclip/lr64_extended_training.py",
+      "destination": "moa/CLIP/src/wellclip/lr64_extended_training.py",
+      "sha256": "936a95bc54c6ac7108ad63c3192459c686762bfbe5ff137d74f911530b0ff936"
+    },
+    {
+      "source": "CLIP/src/wellclip/minibatch_training.py",
+      "destination": "moa/CLIP/src/wellclip/minibatch_training.py",
+      "sha256": "b24b55e18dc30f1cb8572fb1cb124b2f67ca5663d71c5d238b208d558c2380de"
+    },
+    {
+      "source": "CLIP/src/wellclip/model.py",
+      "destination": "moa/CLIP/src/wellclip/model.py",
+      "sha256": "fc8be1a52d3b178ee7693bc137a742bae70b8449cceef96aa57c9cbc6da60f25"
+    },
+    {
+      "source": "CLIP/src/wellclip/preprocessing.py",
+      "destination": "moa/CLIP/src/wellclip/preprocessing.py",
+      "sha256": "595bda7f6208850da686732efc4f5a8f9a14edbacabb8fb39b6a5327c8c7b2bd"
+    },
+    {
+      "source": "CLIP/src/wellclip/training.py",
+      "destination": "moa/CLIP/src/wellclip/training.py",
+      "sha256": "d01560cd34e182716ec639d16d001c37d34176eaae7bc8d6a253772862b2a382"
+    },
+    {
+      "source": "tests/test_wellclip_moa_linear_probe.py",
+      "destination": "moa/tests/test_wellclip_moa_linear_probe.py",
+      "sha256": "826de91d9acddeee6e7479d3a8555a1ed7c9aa40d4e5e6d1069400a451f4208c"
+    },
+    {
+      "source": "tests/test_expanded_moa_probe.py",
+      "destination": "moa/tests/test_expanded_moa_probe.py",
+      "sha256": "a556519e26cadcefcec547f8000b6879d15ce82b931cd162d4f22fedc8268e25"
+    }
+  ]
+}

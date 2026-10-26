@@ -312,3 +312,10 @@ Source models: [DINOv2](https://github.com/facebookresearch/dinov2) and
 Data originates from the existing JUMP Cell Painting snapshot. Upstream data
 and model terms continue to apply; this package does not grant a new license
 to those assets.
+
+## MoA prediction
+
+[MoA 代码与使用说明](moa/README.md)包含既有多标签线性探针、监督 adapter 对照、
+扩量/维度评估、统计与报告代码，以及独立的 embedding → MoA 概率预测入口。
+MoA 标签只用于下游任务；H200 全解冻 CLIP 训练仍只使用图像和已有描述。
+新 checkpoint 的 embedding 需要重新拟合相应 MoA readout。
