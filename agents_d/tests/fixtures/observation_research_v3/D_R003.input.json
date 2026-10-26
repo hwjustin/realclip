@@ -1,0 +1,19 @@
+{
+  "schema_version": "1",
+  "sample_id": "D_R003",
+  "compound": {
+    "name": "Rapamycin",
+    "inchikey": "QFJCIRLUMZQUOT-HPLJOQBZSA-N",
+    "smiles": null,
+    "pubchem_cid": 5284616,
+    "chembl_id": null
+  },
+  "known_moa": [
+    "mTOR inhibitor"
+  ],
+  "context": {
+    "cell_line": "U2OS",
+    "dose": null,
+    "treatment_duration": null
+  }
+}

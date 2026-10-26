@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "realclip-d"
+version = "0.1.0"
+description = "Independent research and observation agents for Cell Painting"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+  "openai-agents>=0.24,<1",
+  "pydantic>=2.11,<3",
+  "httpx>=0.28,<1",
+  "pillow>=11,<13",
+]
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "pytest-asyncio>=1,<2"]
+
+[project.scripts]
+realclip-d = "realclip_d.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/realclip_d"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+

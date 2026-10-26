@@ -1,0 +1,42 @@
+{
+  "schema_version": "1",
+  "sample_id": "D_R001",
+  "research_sha256": "816d201bffcdb31e2c30170a6f02cb2c23e0983c6ae7e92bf9d3fcbf10938c9f",
+  "edits": [
+    {
+      "hypothesis_id": "H1",
+      "field": "applicability",
+      "original": "The prior study used U2OS cells and is directly relevant, but its conditions were 5 μM for 24 hours; the dose and duration for this sample are unknown. Expect a heterogeneous response, potentially concentrated among damaged or dying cells.",
+      "replacement": "The prior study used U2OS cells and its conditions were 5 μM for 24 hours; the dose and duration for this sample are unknown. The response may be heterogeneous and concentrated in a subset of cells; record the appearances without assigning a survival state.",
+      "reason": "Preserve appearance direction and experimental uncertainty while removing private research interpretation or conditioning comparisons on actually supplied material."
+    },
+    {
+      "hypothesis_id": "H2",
+      "field": "how_to_compare",
+      "original": "Use comparable imaging and display settings for treated and control images, and compare distributions rather than relying on isolated examples. Enrichment of compact or bright nuclei supports the hypothesis; no reproducible difference, especially among intact cells, would challenge it. Image appearance alone does not establish mitotic arrest.",
+      "replacement": "Use comparable imaging and display settings for treated and control images, and compare distributions rather than relying on isolated examples. Enrichment of compact or bright nuclei supports the hypothesis; no reproducible difference, especially among intact cells, would challenge it.",
+      "reason": "Preserve appearance direction and experimental uncertainty while removing private research interpretation or conditioning comparisons on actually supplied material."
+    },
+    {
+      "hypothesis_id": "H3",
+      "field": "where_to_look",
+      "original": "Survey full fields across replicate wells for cell abundance, then inspect cell crops for small rounded cells and their nuclear appearance.",
+      "replacement": "Survey the supplied full fields for cell abundance, then inspect cell crops for small rounded cells and their nuclear appearance. Assess multiple wells only if they are actually supplied.",
+      "reason": "Preserve appearance direction and experimental uncertainty while removing private research interpretation or conditioning comparisons on actually supplied material."
+    },
+    {
+      "hypothesis_id": "H3",
+      "field": "what_to_check",
+      "original": "Check for a lower number of cells per comparable field and a higher fraction of very small, round cells with small bright nuclei. Separately note whether apparent cell loss is accompanied by debris or other signs of damaged cells.",
+      "replacement": "Check for a lower number of cells per comparable field and a higher fraction of very small, round cells with small bright nuclei. Separately note any visible debris.",
+      "reason": "Preserve appearance direction and experimental uncertainty while removing private research interpretation or conditioning comparisons on actually supplied material."
+    },
+    {
+      "hypothesis_id": "H3",
+      "field": "how_to_compare",
+      "original": "Compare treated and control fields using the same field-selection and cell-counting approach, and assess consistency across fields and replicates. Fewer cells together with enrichment of the described small, round, bright-nucleus phenotype supports the hypothesis; unchanged counts and no enrichment challenge it. Interpret the expected magnitude cautiously because the sample's dose and duration are unknown.",
+      "replacement": "Compare treated and control fields using the same field-selection and cell-counting approach, and assess consistency across available fields. Compare replicate wells only if provided. Fewer cells together with enrichment of small, round cells with bright nuclei supports the hypothesis; unchanged counts and no enrichment challenge it. The sample dose and duration are unknown.",
+      "reason": "Preserve appearance direction and experimental uncertainty while removing private research interpretation or conditioning comparisons on actually supplied material."
+    }
+  ]
+}

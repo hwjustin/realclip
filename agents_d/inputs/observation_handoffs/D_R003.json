@@ -1,0 +1,21 @@
+{
+  "schema_version": "1",
+  "sample_id": "D_R003",
+  "research_sha256": "fd7274cb2ddf4e3a3eae8cc152d90c53bab824878b0cdefb408ef2fc00b24739",
+  "edits": [
+    {
+      "hypothesis_id": "H1",
+      "field": "applicability",
+      "original": "Low-to-moderate confidence. The sample is U2OS, but no UBAP1 deficiency is specified and the dose and duration are unknown. The predicted change may be absent or too subtle to distinguish from ordinary cytoplasmic staining variation.",
+      "replacement": "The sample is U2OS; the prior results concern a different cell line and cell state. The dose and duration are unknown. The predicted change may be absent or too subtle to distinguish from ordinary cytoplasmic staining variation.",
+      "reason": "Preserve appearance direction and experimental uncertainty while removing private research interpretation or conditioning comparisons on actually supplied material."
+    },
+    {
+      "hypothesis_id": "H2",
+      "field": "how_to_compare",
+      "original": "Use comparable fields and cells, account for cell density and segmentation quality, and compare distributions rather than relying on a few representative cells. Consider whether any apparent area shift is accompanied by loss of cells or field-to-field imbalance. Without treatment duration and dose, a lack of size change does not rule out mTORC1 inhibition.",
+      "replacement": "Use comparable fields and cells, account for cell density and segmentation quality, and compare distributions rather than relying on a few representative cells. Consider whether any apparent area shift is accompanied by fewer visible cells or field-to-field imbalance. Unknown dose and duration limit expectations about the magnitude of a size difference.",
+      "reason": "Preserve appearance direction and experimental uncertainty while removing private research interpretation or conditioning comparisons on actually supplied material."
+    }
+  ]
+}

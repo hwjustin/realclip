@@ -1,0 +1,19 @@
+{
+  "schema_version": "1",
+  "sample_id": "D_R001",
+  "compound": {
+    "name": "Nocodazole",
+    "inchikey": "KYRVNWMVYQXFEU-UHFFFAOYSA-N",
+    "smiles": null,
+    "pubchem_cid": 4122,
+    "chembl_id": null
+  },
+  "known_moa": [
+    "Microtubule destabilizer"
+  ],
+  "context": {
+    "cell_line": "U2OS",
+    "dose": null,
+    "treatment_duration": null
+  }
+}

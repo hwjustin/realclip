@@ -1,0 +1,21 @@
+{
+  "schema_version": "1",
+  "sample_id": "D_R002",
+  "research_sha256": "16567bb74b85d126dd4600e3f51d9c8108128c8b665c7e9b9be7111e86eefb72",
+  "edits": [
+    {
+      "hypothesis_id": "H1",
+      "field": "applicability",
+      "original": "Plausible but uncertain. The evidence is from HeLa cells at 250 nM, while the U2OS dose and duration are unknown. The response could range from little visible change to a strong cytotoxic phenotype.",
+      "replacement": "Plausible but uncertain. The evidence is from HeLa cells at 250 nM, while the U2OS dose and duration are unknown. The response could range from little visible change to marked visible changes.",
+      "reason": "Preserve appearance direction and experimental uncertainty while removing private research interpretation or conditioning comparisons on actually supplied material."
+    },
+    {
+      "hypothesis_id": "H3",
+      "field": "applicability",
+      "original": "This is the most directly supported morphology hypothesis for staurosporine, but transfer to U2OS is uncertain. The unknown dose and treatment duration prevent a reliable estimate of prevalence or severity.",
+      "replacement": "Transfer from the reported HeLa experiment to U2OS is uncertain. The unknown dose and treatment duration prevent a reliable estimate of prevalence or severity.",
+      "reason": "Preserve appearance direction and experimental uncertainty while removing private research interpretation or conditioning comparisons on actually supplied material."
+    }
+  ]
+}

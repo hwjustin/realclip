@@ -1,0 +1,113 @@
+{
+  "sample_id": "D_R002",
+  "compound_identification": {
+    "summary": "Staurosporine is verified as PubChem CID 44259 and ChEMBL CHEMBL388978. The supplied InChIKey, HKSZLNNOFSGOKW-FYTWVXJKSA-N, matches the retrieved records; the molecular formula is C28H26N4O3. Recorded synonyms include Staurosporin, (+)-Staurosporine, and AM-2282. The chemical identity is not ambiguous. The experimental dose and treatment duration are unspecified.",
+    "source_ids": [
+      "api_9fc711cb0e90d074a5904328",
+      "api_a7010d85f0c0328777b1b4af",
+      "api_d619dbd0ff74d7f84fac1199"
+    ]
+  },
+  "compound_research_and_analysis": {
+    "findings": [
+      {
+        "finding": "PubChem's pharmacology annotation assigns staurosporine to the broad MeSH class Enzyme Inhibitors. This classification does not specify a particular kinase target.",
+        "reported_conditions": "Database annotation; no experimental conditions reported.",
+        "source_ids": [
+          "api_9bfb6037fb32a99727638147"
+        ]
+      },
+      {
+        "finding": "In a study of HeLa cells, staurosporine treatment was associated with increasing cleaved caspase-3 and cleaved PARP over time. The study also observed mitochondrial fragmentation, including in cells with cytochrome c release; the proportion of cells showing cytochrome c release increased during treatment. The authors classified these results as an apoptotic response.",
+        "reported_conditions": "HeLa cells treated with 250 nM staurosporine for durations from 1 to 8 hours. Mitochondrial morphology and cytochrome c distribution were examined by fluorescence microscopy. These are not U2OS or Cell Painting conditions.",
+        "source_ids": [
+          "api_8e2d38de23e9051154fcd1f7"
+        ]
+      },
+      {
+        "finding": "The same paper's abstract reports cell shrinkage, neurite retraction, mitochondrial fragmentation, nuclear condensation, and membrane blebbing in differentiated SH-SY5Y cells exposed to ethanol. Those observations concern ethanol, not staurosporine, and should not be treated as direct evidence for the staurosporine response.",
+        "reported_conditions": "Differentiated SH-SY5Y neuronal cells exposed to ethanol; the abstract does not report a staurosporine condition for these observations.",
+        "source_ids": [
+          "api_8e2d38de23e9051154fcd1f7"
+        ]
+      }
+    ],
+    "research_gaps": "The supplied context gives no dose or treatment duration, and the retrieved morphology evidence for staurosporine is from HeLa cells rather than U2OS cells. No retrieved source directly establishes a U2OS Cell Painting phenotype. The ChEMBL query returned no mechanism records in the available evidence, and its activity details are not provided here; therefore, specific targets or target-level potency cannot be established from this packet. The degree of apoptosis and whether cells are rounded, detached, or visibly fragmented in this experiment remain uncertain."
+  },
+  "morphology_hypotheses": [
+    {
+      "id": "H1",
+      "change": "Some treated cells may appear smaller and rounder, with reduced spread area and possibly irregular or bleb-like edges.",
+      "basis": "Reported: staurosporine-treated HeLa cells showed time-dependent caspase-3 and PARP cleavage, consistent with apoptosis; the paper's abstract reports cell shrinkage and membrane blebbing in a separate ethanol-treated neuronal-cell experiment, not in staurosporine-treated U2OS cells. Inference: if the supplied broad kinase-inhibition perturbation induces a comparable apoptotic response in U2OS, cell contraction and reduced spreading may be visible. Edge blebbing may be subtle or absent in fixed Cell Painting images.",
+      "applicability": "Plausible but uncertain. The evidence is from HeLa cells at 250 nM, while the U2OS dose and duration are unknown. The response could range from little visible change to a strong cytotoxic phenotype.",
+      "source_ids": [
+        "api_8e2d38de23e9051154fcd1f7"
+      ]
+    },
+    {
+      "id": "H2",
+      "change": "A subset of nuclei may become smaller, brighter or more compact in the DNA-stained channel, with irregular or fragmented nuclear profiles in more affected cells.",
+      "basis": "Reported: the article describes nuclear condensation in ethanol-treated differentiated SH-SY5Y cells, but that is not direct staurosporine evidence. Staurosporine-treated HeLa cells showed apoptotic biochemical markers. Inference: if apoptosis proceeds in U2OS, chromatin condensation and, in more advanced cases, nuclear fragmentation could alter nuclear size, intensity, and contour. This prediction is not established for the supplied conditions.",
+      "applicability": "Uncertain and likely dependent on exposure strength and duration. A DNA-channel change may be absent at a mild or early perturbation, while severe effects could be accompanied by loss of intact cells.",
+      "source_ids": [
+        "api_8e2d38de23e9051154fcd1f7"
+      ]
+    },
+    {
+      "id": "H3",
+      "change": "Mitochondrial staining may appear less interconnected and more punctate or compact in affected cells.",
+      "basis": "Reported: staurosporine-treated HeLa cells showed mitochondrial fragmentation, described in the article as mitochondria appearing as small globules rather than a tubular, interconnected network. Inference: a similar change could be visible in the mitochondrial channel of U2OS Cell Painting images if the compound produces a comparable response. The reported experiment used a different cell line and imaging approach, so the Cell Painting appearance is not certain.",
+      "applicability": "This is the most directly supported morphology hypothesis for staurosporine, but transfer to U2OS is uncertain. The unknown dose and treatment duration prevent a reliable estimate of prevalence or severity.",
+      "source_ids": [
+        "api_8e2d38de23e9051154fcd1f7"
+      ]
+    }
+  ],
+  "observation_guidance": [
+    {
+      "hypothesis_id": "H1",
+      "where_to_look": "Inspect whole-cell outlines in the actin/Golgi/plasma-membrane (AGP) channel and compare them with nuclear position and nearby cell boundaries. Review fields at both typical and high cell density.",
+      "what_to_check": "Look for reduced spread area, a more rounded outline, fewer extended edges, and irregular or bleb-like boundaries. Note whether these appearances occur in a subset of cells or broadly across the field.",
+      "how_to_compare": "Compare treated and control cells at similar density and image quality. A higher fraction of small, rounded cells in treated wells supports the hypothesis; similar cell outlines challenge it. Consider whether apparent cell loss or crowding could explain the difference."
+    },
+    {
+      "hypothesis_id": "H2",
+      "where_to_look": "Inspect the DNA-stained nuclear channel, first in single-cell views and then across matched fields.",
+      "what_to_check": "Compare nuclear area, compactness, brightness distribution, boundary regularity, and the presence of multiple small DNA-positive bodies near a cell. Distinguish condensed profiles from imaging artifacts or overlapping nuclei.",
+      "how_to_compare": "Compare distributions of nuclear appearance in treated and control cells under comparable acquisition settings. A treated-cell shift toward smaller, more compact or irregular nuclei supports the hypothesis; no consistent shift challenges it. Interpret possible fragments cautiously if cell segmentation is uncertain."
+    },
+    {
+      "hypothesis_id": "H3",
+      "where_to_look": "Inspect the mitochondrial channel within individual cell bodies, especially in cells with clearly segmented cytoplasm; use matched fields and comparable display settings.",
+      "what_to_check": "Look for a shift from elongated or interconnected mitochondrial staining toward shorter, discrete puncta or compact globular patterns. Check whether the signal is genuinely redistributed within cells rather than simply weaker or affected by cell size.",
+      "how_to_compare": "Compare mitochondrial pattern and puncta distribution in treated versus control cells of similar size and image quality. More fragmented-looking patterns among treated cells support the hypothesis; preserved interconnected patterns at similar frequency challenge it. Account for the possibility that severe cell loss or weak staining obscures the pattern."
+    }
+  ],
+  "sources": [
+    {
+      "id": "api_9fc711cb0e90d074a5904328",
+      "title": null,
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/inchikey/HKSZLNNOFSGOKW-FYTWVXJKSA-N/property/InChIKey,InChI,IUPACName,Title,MolecularFormula/JSON"
+    },
+    {
+      "id": "api_a7010d85f0c0328777b1b4af",
+      "title": null,
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/44259/synonyms/JSON"
+    },
+    {
+      "id": "api_d619dbd0ff74d7f84fac1199",
+      "title": null,
+      "url": "https://www.ebi.ac.uk/chembl/api/data/molecule.json?molecule_structures__standard_inchi_key=HKSZLNNOFSGOKW-FYTWVXJKSA-N&limit=10&offset=0"
+    },
+    {
+      "id": "api_9bfb6037fb32a99727638147",
+      "title": null,
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/44259/JSON?heading=Pharmacology+and+Biochemistry"
+    },
+    {
+      "id": "api_8e2d38de23e9051154fcd1f7",
+      "title": null,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10329692/fullTextXML"
+    }
+  ]
+}

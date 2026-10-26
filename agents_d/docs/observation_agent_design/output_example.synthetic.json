@@ -1,0 +1,148 @@
+{
+  "sample_id": "SYNTHETIC_OBSERVATION_DESIGN",
+  "observations": [
+    {
+      "id": "O1",
+      "text": "In the supplied matched overview fields, fewer cells are visible in the treated condition than in the control condition.",
+      "scope": "Supplied overview fields only; no inference about whole-well abundance, survival, or independent replicates.",
+      "image_ids": [
+        "synthetic_treatment_overview",
+        "synthetic_control_overview"
+      ],
+      "cp_feature_ids": [],
+      "visually_confirmed": true,
+      "cp_assessment": {
+        "status": "not_checked",
+        "reason": "Synthetic example: no matching quantitative evidence was used for this visual comparison.",
+        "effect_on_description": "Retain the bounded visual statement without quantitative support."
+      }
+    },
+    {
+      "id": "O2",
+      "text": "Among cells with resolved boundaries in the supplied local views, treated cells show no clear increase in rounding relative to controls.",
+      "scope": "Cells with resolved boundaries in the supplied local views; does not establish equivalence between the populations.",
+      "image_ids": [
+        "synthetic_treatment_local",
+        "synthetic_control_local"
+      ],
+      "cp_feature_ids": [],
+      "visually_confirmed": true,
+      "cp_assessment": {
+        "status": "not_checked",
+        "reason": "Synthetic example: no matching quantitative evidence was used for this visual comparison.",
+        "effect_on_description": "Retain the bounded visual statement without quantitative support."
+      }
+    },
+    {
+      "id": "O3",
+      "text": "The supplied measurement rows report lower cell area in the treated well than in the control well, but a corresponding local image difference is unresolved.",
+      "scope": "Fictional well-level measurement comparison; not attributable to individual cells or crops.",
+      "image_ids": [],
+      "cp_feature_ids": [
+        "synthetic_treatment_area",
+        "synthetic_control_area"
+      ],
+      "visually_confirmed": false,
+      "cp_assessment": {
+        "status": "measurement_only",
+        "reason": "Synthetic well-profile comparison only; no corresponding visual area difference is established.",
+        "effect_on_description": "Excluded from the visual description because visual confirmation is unresolved."
+      }
+    }
+  ],
+  "hypothesis_assessments": [
+    {
+      "hypothesis_id": "SYNTHETIC_H1",
+      "assessment": "partially_supported",
+      "checks": [
+        {
+          "check": "Fewer visible cells per comparable overview field",
+          "assessment": "supported",
+          "observation_ids": [
+            "O1"
+          ],
+          "reason": "The fictional overview comparison supports lower field-level abundance.",
+          "contrast": {
+            "treatment": "Synthetic treated appearance as described in the cited observations.",
+            "control": "Synthetic control appearance used as the comparison baseline.",
+            "difference": "observed"
+          }
+        },
+        {
+          "check": "More rounded cells",
+          "assessment": "not_supported",
+          "observation_ids": [
+            "O2"
+          ],
+          "reason": "The fictional local views allow a bounded outline comparison but show no clear enrichment of rounded cells.",
+          "contrast": {
+            "treatment": "Synthetic treated appearance as described in the cited observations.",
+            "control": "Synthetic control appearance used as the comparison baseline.",
+            "difference": "not_observed"
+          }
+        },
+        {
+          "check": "Rounded cells also have brighter nuclei",
+          "assessment": "uncertain",
+          "observation_ids": [],
+          "reason": "The fictional input lacks aligned nuclear views and comparable nuclear display metadata.",
+          "contrast": {
+            "treatment": "Synthetic treated appearance as described in the cited observations.",
+            "control": "Synthetic control appearance used as the comparison baseline.",
+            "difference": "unassessable"
+          }
+        }
+      ],
+      "reason": "Only the abundance component is visually supported; rounding is unsupported and same-cell nuclear co-occurrence cannot be assessed."
+    },
+    {
+      "hypothesis_id": "SYNTHETIC_H2",
+      "assessment": "uncertain",
+      "checks": [
+        {
+          "check": "Reduced projected cell area",
+          "assessment": "uncertain",
+          "observation_ids": [
+            "O3"
+          ],
+          "reason": "The fictional CP comparison is not accompanied by a resolved visual area difference.",
+          "contrast": {
+            "treatment": "Synthetic treated appearance as described in the cited observations.",
+            "control": "Synthetic control appearance used as the comparison baseline.",
+            "difference": "unassessable"
+          }
+        }
+      ],
+      "reason": "A measurement-only finding cannot establish the proposed visible area change."
+    },
+    {
+      "hypothesis_id": "SYNTHETIC_H3",
+      "assessment": "supported",
+      "checks": [
+        {
+          "check": "Reduced field-level abundance without asserting altered cell shape",
+          "assessment": "supported",
+          "observation_ids": [
+            "O1"
+          ],
+          "reason": "The same fictional abundance observation is relevant to this separate hypothesis; it is not new independent evidence.",
+          "contrast": {
+            "treatment": "Synthetic treated appearance as described in the cited observations.",
+            "control": "Synthetic control appearance used as the comparison baseline.",
+            "difference": "observed"
+          }
+        }
+      ],
+      "reason": "The bounded field-level hypothesis is supported by the existing overview observation."
+    }
+  ],
+  "description_observation_ids": [
+    "O1",
+    "O2"
+  ],
+  "limitations": [
+    "SYNTHETIC FORMAT EXAMPLE ONLY: all observations, image IDs, CP IDs, and judgments are invented; no images or measurements were inspected.",
+    "This file is not a sealed run, is incompatible with the active DescriptionResult parser, and must not be used as a scientific result or training text.",
+    "The fictional example has no aligned nuclear views or comparable nuclear intensity metadata."
+  ]
+}

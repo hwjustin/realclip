@@ -1,0 +1,114 @@
+{
+  "sample_id": "D_R001",
+  "compound_identification": {
+    "summary": "The supplied identifiers resolve consistently to nocodazole: PubChem CID 4122, ChEMBL CHEMBL9514, InChIKey KYRVNWMVYQXFEU-UHFFFAOYSA-N, formula C14H11N3O3S, and IUPAC name methyl N-[6-(thiophene-2-carbonyl)-1H-benzimidazol-2-yl]carbamate. A reported synonym is R 17934; CAS Registry Number 31430-18-9. Identity is verified by the complete InChIKey, with no material identity ambiguity.",
+    "source_ids": [
+      "api_737df51c96f66b34affdd1a1",
+      "api_77289c8316219ed6a1d99b46",
+      "api_7eafaab191065656742993d2"
+    ]
+  },
+  "compound_research_and_analysis": {
+    "findings": [
+      {
+        "finding": "PubChem classifies nocodazole under the MeSH pharmacological classes Tubulin Modulators and Antineoplastic Agents. These are classifications, not a quantitative target-engagement result for the supplied experiment.",
+        "reported_conditions": "Database classification; experimental conditions are not applicable.",
+        "source_ids": [
+          "api_27ccd12a75b0818b27735dff"
+        ]
+      },
+      {
+        "finding": "A Cell Painting study used nocodazole as a positive control in U-2 OS (U2OS) cells. At 5 μM for 24 hours, the study reported a larger reduction in cell number with nocodazole than with tetrandrine. In its dead-cell analysis, nocodazole-treated U-2 OS cells had 1,516 dead cells among 8,206 total (18.5%), versus 0.2% for DMSO controls. The authors described the dead cells as very small and round, with small, bright nuclei. The same study reported a smaller dead-cell fraction for Hep G2 cells treated with nocodazole (1.1%), indicating that the response depended on cell line under those assay conditions.",
+        "reported_conditions": "U-2 OS and Hep G2 Cell Painting; nocodazole 5 μM; 24-hour incubation. The reported U-2 OS comparison is especially relevant to this sample, but the sample's dose and duration are unspecified.",
+        "source_ids": [
+          "api_33508bd7091e13550b7fdc15"
+        ]
+      },
+      {
+        "finding": "The Cell Painting study acquired images of multiple cellular compartments, including nuclear, mitochondrial, actin, and ER-associated signals. Thus, the reported nocodazole response can be examined through cell shape, cell count, and nuclear appearance in addition to broader compartment patterns; the described assay does not directly establish microtubule appearance in the images.",
+        "reported_conditions": "Description of the Cell Painting assay in the same study; U-2 OS was imaged at one site, and the protocol used fixed, stained cells.",
+        "source_ids": [
+          "api_33508bd7091e13550b7fdc15"
+        ]
+      }
+    ],
+    "research_gaps": "The experimental dose and treatment duration for D_R001 are not provided, so the prior U2OS result at 5 μM for 24 hours cannot be assumed to predict the magnitude of this sample's response. The available ChEMBL synthesis confirmed the compound identity but returned no mechanism records; detailed activity and linked target records were omitted from the evidence packet. The retrieved literature excerpt provides direct U2OS Cell Painting evidence for cell loss and a dead-cell appearance, but does not report a nocodazole-specific quantitative profile of each stained compartment or a measured mitotic-cell fraction."
+  },
+  "morphology_hypotheses": [
+    {
+      "id": "H1",
+      "change": "A greater fraction of cells may appear rounded, compact, or less spread, with reduced or retracted cell outlines compared with controls.",
+      "basis": "Reported observation: in a U2OS Cell Painting experiment, nocodazole-treated dead cells were described as very small and round. Inference: the supplied microtubule-destabilizer MOA makes a shift toward less spread or rounded cell shapes plausible, but the direct reported description applies specifically to dead cells and does not establish that all treated cells round up. The standard Cell Painting image channels provide indirect shape readouts rather than a direct microtubule image.",
+      "applicability": "The prior study used U2OS cells and is directly relevant, but its conditions were 5 μM for 24 hours; the dose and duration for this sample are unknown. Expect a heterogeneous response, potentially concentrated among damaged or dying cells.",
+      "source_ids": [
+        "api_27ccd12a75b0818b27735dff",
+        "api_33508bd7091e13550b7fdc15"
+      ]
+    },
+    {
+      "id": "H2",
+      "change": "Some cells may show more compact or unusually bright-appearing nuclei, and the population may contain a broader range of nuclear sizes and shapes than controls.",
+      "basis": "Reported observation: the U2OS Cell Painting study described small, bright nuclei in nocodazole-associated dead cells. Inference: disruption of microtubule-dependent division could also change the fraction of cells with mitotic-like nuclear appearances, but the retrieved study excerpt did not quantify mitotic arrest or characterize nuclear shapes in viable cells. Treat a change in mitotic-like nuclei as a possibility, not an established outcome.",
+      "applicability": "The small, bright nuclear appearance was reported in the U2OS assay at 5 μM for 24 hours. Whether it is detectable here depends on the unknown dose and duration and on how many cells are affected.",
+      "source_ids": [
+        "api_33508bd7091e13550b7fdc15"
+      ]
+    },
+    {
+      "id": "H3",
+      "change": "The treated fields may contain fewer cells and a higher proportion of small, rounded cells with bright nuclei than control fields.",
+      "basis": "Reported observation: under the prior U2OS Cell Painting conditions (5 μM, 24 hours), nocodazole reduced cell number and 18.5% of counted U2OS cells were classified as dead, compared with 0.2% for DMSO; dead cells were described as very small and round with small, bright nuclei. Prediction: a similar treatment effect here would appear as both reduced cell abundance and enrichment of that visual phenotype. This is a population-level prediction, not a claim that every cell will show it.",
+      "applicability": "This is the most directly supported hypothesis because the prior study used U2OS Cell Painting. The expected strength is uncertain because D_R001 has no reported dose or treatment duration.",
+      "source_ids": [
+        "api_33508bd7091e13550b7fdc15"
+      ]
+    }
+  ],
+  "observation_guidance": [
+    {
+      "hypothesis_id": "H1",
+      "where_to_look": "Inspect whole-cell outlines and cell-body regions in the actin-associated and other cell-outline image channels, across complete fields and individual-cell crops.",
+      "what_to_check": "Look for an increased frequency of rounded or compact cells, reduced apparent spread area, and retracted or less extended outlines. Distinguish these from segmentation artifacts and from small fragments or debris.",
+      "how_to_compare": "Compare treated and control cells from matched fields and comparable regions, considering both the overall distribution and the fraction of cells with these appearances. A reproducible shift toward rounded, less-spread cells supports the hypothesis; similar shape distributions among intact cells challenge it."
+    },
+    {
+      "hypothesis_id": "H2",
+      "where_to_look": "Inspect the nuclear channel in individual-cell views and across whole fields, noting cells with compact, bright-appearing nuclei as well as unusual nuclear size or shape.",
+      "what_to_check": "Check whether compact or bright nuclei, and the range of nuclear appearances, are more frequent in treated cells. Record whether such nuclei occur in small rounded cells or also in otherwise intact cells.",
+      "how_to_compare": "Use comparable imaging and display settings for treated and control images, and compare distributions rather than relying on isolated examples. Enrichment of compact or bright nuclei supports the hypothesis; no reproducible difference, especially among intact cells, would challenge it. Image appearance alone does not establish mitotic arrest."
+    },
+    {
+      "hypothesis_id": "H3",
+      "where_to_look": "Survey full fields across replicate wells for cell abundance, then inspect cell crops for small rounded cells and their nuclear appearance.",
+      "what_to_check": "Check for a lower number of cells per comparable field and a higher fraction of very small, round cells with small bright nuclei. Separately note whether apparent cell loss is accompanied by debris or other signs of damaged cells.",
+      "how_to_compare": "Compare treated and control fields using the same field-selection and cell-counting approach, and assess consistency across fields and replicates. Fewer cells together with enrichment of the described small, round, bright-nucleus phenotype supports the hypothesis; unchanged counts and no enrichment challenge it. Interpret the expected magnitude cautiously because the sample's dose and duration are unknown."
+    }
+  ],
+  "sources": [
+    {
+      "id": "api_737df51c96f66b34affdd1a1",
+      "title": null,
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/inchikey/KYRVNWMVYQXFEU-UHFFFAOYSA-N/property/InChIKey,InChI,IUPACName,Title,MolecularFormula/JSON"
+    },
+    {
+      "id": "api_77289c8316219ed6a1d99b46",
+      "title": null,
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/4122/synonyms/JSON"
+    },
+    {
+      "id": "api_7eafaab191065656742993d2",
+      "title": null,
+      "url": "https://www.ebi.ac.uk/chembl/api/data/molecule/CHEMBL9514.json"
+    },
+    {
+      "id": "api_27ccd12a75b0818b27735dff",
+      "title": null,
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/4122/JSON?heading=Pharmacology+and+Biochemistry"
+    },
+    {
+      "id": "api_33508bd7091e13550b7fdc15",
+      "title": null,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12084007/fullTextXML"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "sample_id": "D_R003",
+  "compound_identification": {
+    "summary": "The supplied name and complete InChIKey identify rapamycin, also known as sirolimus (PubChem CID 5284616; ChEMBL CHEMBL413; formula C51H79NO13). The identity is confirmed by the matching InChIKey. Rapamune and AY-22989 are among its synonyms. No material identity ambiguity remains.",
+    "source_ids": [
+      "api_37bc7d076ec9eef6a4a128fc",
+      "api_40ddaa448cfe723f531e50d9",
+      "api_dd86e5ff9d5ca9b85517dea6"
+    ]
+  },
+  "compound_research_and_analysis": {
+    "findings": [
+      {
+        "finding": "ChEMBL identifies sirolimus (CHEMBL413) as an inhibitor of FK506-binding protein 1A (FKBP1A/FKBP12), with a direct interaction. The supplied mTOR-inhibitor MOA is consistent with the article, which describes rapamycin as a specific mTORC1 inhibitor.",
+        "reported_conditions": "ChEMBL mechanism record; no cell line, dose, or treatment duration specified. The mTORC1 description comes from the cited article.",
+        "source_ids": [
+          "api_3d47322d7a5ea58247dc5f23",
+          "api_eab3456bf5a90760b9e920f9"
+        ]
+      },
+      {
+        "finding": "In UBAP1-deficient cell experiments, rapamycin was reported to enhance mTOR localization to lysosomes, reduce lysosome-associated p62 puncta, reduce abnormally enlarged LAMP1-positive vesicles, and reduce nuclear TFEB localization. The authors also reported partial restoration of LysoSensor fluorescence and increased cathepsin activity in other models.",
+        "reported_conditions": "The detailed cellular results include COS-7 cells with UBAP1 knockdown: 500 nM rapamycin for 24 hours for mTOR/LAMP1 localization and p62 analyses, and 5 hours for lysosome-diameter analysis. Other reported observations involved UBAP1-deficient fibroblasts or cultured mouse neurons. These are not untreated, wild-type U2OS Cell Painting experiments.",
+        "source_ids": [
+          "api_1e35e68a7353d00b41009831",
+          "api_eab3456bf5a90760b9e920f9"
+        ]
+      },
+      {
+        "finding": "The article’s methods list a Halo-tag LC3 U2OS stable cell line and state that rapamycin was used at 500 nM in cell experiments. The excerpts available here do not establish that the reported rapamycin-associated lysosome changes were measured in that U2OS line.",
+        "reported_conditions": "U2OS line noted in cell-culture methods; the specific rapamycin dose and duration used in a U2OS morphology experiment are not established in the available excerpts.",
+        "source_ids": [
+          "api_eab3456bf5a90760b9e920f9"
+        ]
+      }
+    ],
+    "research_gaps": "No dose or treatment duration is supplied for sample D_R003, and the cited cellular morphology results are mainly from UBAP1-deficient COS-7 cells rather than the stated U2OS context. The article does not provide evidence here for rapamycin-induced changes in standard Cell Painting images of unmodified U2OS cells. Cell Painting lacks a lysosome-specific marker, so any lysosome or autophagy inference from its channels would be indirect. Dose, duration, baseline cell state, and image-level observations are needed to assess effect size and direction confidently."
+  },
+  "morphology_hypotheses": [
+    {
+      "id": "H1",
+      "change": "There may be a subtle shift toward fewer or smaller conspicuous cytoplasmic vesicle-like puncta, with less coarse punctate texture; a clear effect is not assured.",
+      "basis": "Reported observation: in UBAP1-deficient COS-7 cells, rapamycin reduced abnormally enlarged LAMP1-positive vesicles and lysosome-associated p62 puncta. Inference: if rapamycin produces a comparable lysosomal response in these U2OS cells, some vesicle-associated texture or larger puncta might appear reduced. This is an indirect prediction: the reported assays used lysosome-associated markers, whereas Cell Painting does not specifically label lysosomes, and the reported effects were in a different cell state and cell line.",
+      "applicability": "Low-to-moderate confidence. The sample is U2OS, but no UBAP1 deficiency is specified and the dose and duration are unknown. The predicted change may be absent or too subtle to distinguish from ordinary cytoplasmic staining variation.",
+      "source_ids": [
+        "api_eab3456bf5a90760b9e920f9"
+      ]
+    },
+    {
+      "id": "H2",
+      "change": "With sufficiently sustained treatment, cells may have modestly reduced cell area or cytoplasmic area; an acute or weak treatment may show no detectable size change.",
+      "basis": "Reported observation: the cited article characterizes rapamycin as an mTORC1 inhibitor but does not report cell-area changes for the relevant experiments. Inference: inhibiting mTORC1 may reduce anabolic growth, which could lead to smaller cells under conditions and durations that allow a growth effect to develop. This is a general mechanistic prediction, not a morphology result reported by the cited study.",
+      "applicability": "Uncertain. The sample’s dose and treatment duration are unspecified, and no direct size measurement in untreated U2OS cells is established by the available evidence. Cell area can also vary with plating density and field composition.",
+      "source_ids": [
+        "api_eab3456bf5a90760b9e920f9"
+      ]
+    }
+  ],
+  "observation_guidance": [
+    {
+      "hypothesis_id": "H1",
+      "where_to_look": "Inspect the cytoplasm around and between nuclei across comparable individual cells, especially any fields where the cytoplasmic signal contains discrete puncta or larger vesicle-like features. Use the relevant Cell Painting channels together rather than treating any one channel as a lysosome-specific readout.",
+      "what_to_check": "Look for changes in the number, apparent size, and prominence of larger puncta and in overall coarse versus fine cytoplasmic texture. A reduction in conspicuous large puncta or coarse granularity would be consistent with the hypothesis; unchanged texture or an increase in prominent puncta would challenge it. These appearances cannot establish lysosome identity.",
+      "how_to_compare": "Compare treated and control cells matched as closely as possible for cell size, confluence, field position, and image quality. Check both per-cell puncta and field-level patterns, and avoid interpreting a difference in cell density or staining intensity alone as a vesicle change. The lack of a specified dose and duration limits interpretation."
+    },
+    {
+      "hypothesis_id": "H2",
+      "where_to_look": "Compare whole-cell outlines and the cytoplasmic extent around nuclei in individual cells, then check the distribution of cell areas across multiple fields.",
+      "what_to_check": "Assess whether treated cells have a smaller projected area or less cytoplasmic area than controls. A consistent shift across fields would support the prediction; similar area distributions, or differences confined to crowded or poorly segmented fields, would challenge it.",
+      "how_to_compare": "Use comparable fields and cells, account for cell density and segmentation quality, and compare distributions rather than relying on a few representative cells. Consider whether any apparent area shift is accompanied by loss of cells or field-to-field imbalance. Without treatment duration and dose, a lack of size change does not rule out mTORC1 inhibition."
+    }
+  ],
+  "sources": [
+    {
+      "id": "api_37bc7d076ec9eef6a4a128fc",
+      "title": null,
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/inchikey/QFJCIRLUMZQUOT-HPLJOQBZSA-N/property/InChIKey,InChI,IUPACName,Title,MolecularFormula/JSON"
+    },
+    {
+      "id": "api_40ddaa448cfe723f531e50d9",
+      "title": null,
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5284616/synonyms/JSON"
+    },
+    {
+      "id": "api_dd86e5ff9d5ca9b85517dea6",
+      "title": null,
+      "url": "https://www.ebi.ac.uk/chembl/api/data/molecule.json?molecule_structures__standard_inchi_key=QFJCIRLUMZQUOT-HPLJOQBZSA-N&limit=10&offset=0"
+    },
+    {
+      "id": "api_3d47322d7a5ea58247dc5f23",
+      "title": null,
+      "url": "https://www.ebi.ac.uk/chembl/api/data/mechanism.json?molecule_chembl_id=CHEMBL413&limit=10&offset=0"
+    },
+    {
+      "id": "api_1e35e68a7353d00b41009831",
+      "title": null,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID%3A41203601+AND+SRC%3AMED&format=json&resultType=core&pageSize=2"
+    },
+    {
+      "id": "api_eab3456bf5a90760b9e920f9",
+      "title": null,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12595036/fullTextXML"
+    }
+  ]
+}

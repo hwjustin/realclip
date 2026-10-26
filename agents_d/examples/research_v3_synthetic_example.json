@@ -1,0 +1,47 @@
+{
+  "sample_id": "SYNTHETIC_FORMAT_EXAMPLE",
+  "compound_identification": {
+    "summary": "SYNTHETIC_COMPOUND is fictional; this example establishes no real chemical identity.",
+    "source_ids": [
+      "synthetic_source"
+    ]
+  },
+  "compound_research_and_analysis": {
+    "findings": [
+      {
+        "finding": "The fictional source reports larger nuclear outlines in a synthetic cell system.",
+        "reported_conditions": "Synthetic cells; dose and duration are unreported.",
+        "source_ids": [
+          "synthetic_source"
+        ]
+      }
+    ],
+    "research_gaps": "Manually constructed format example; no real source was retrieved or scientific claim established."
+  },
+  "morphology_hypotheses": [
+    {
+      "id": "H1",
+      "change": "Nuclear outlines may be larger in treated cells.",
+      "basis": "The fictional source reports enlarged outlines; transfer to U2OS is an inference, not a direct U2OS observation.",
+      "applicability": "U2OS is supplied, but dose and treatment duration are unknown, so the appearance is uncertain.",
+      "source_ids": [
+        "synthetic_source"
+      ]
+    }
+  ],
+  "observation_guidance": [
+    {
+      "hypothesis_id": "H1",
+      "where_to_look": "Nuclei in matched DNA-channel fields.",
+      "what_to_check": "Nuclear outline size and its variation across comparable cells.",
+      "how_to_compare": "Compare treated and control fields acquired comparably. Consistently larger outlines support the prediction; similar sizes challenge it. Blurred or missing DNA views prevent assessment."
+    }
+  ],
+  "sources": [
+    {
+      "id": "synthetic_source",
+      "title": "Fictional format example only",
+      "url": "https://example.invalid/synthetic-source"
+    }
+  ]
+}

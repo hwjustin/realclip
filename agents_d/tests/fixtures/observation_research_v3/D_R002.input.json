@@ -1,0 +1,19 @@
+{
+  "schema_version": "1",
+  "sample_id": "D_R002",
+  "compound": {
+    "name": "Staurosporine",
+    "inchikey": "HKSZLNNOFSGOKW-FYTWVXJKSA-N",
+    "smiles": null,
+    "pubchem_cid": 44259,
+    "chembl_id": null
+  },
+  "known_moa": [
+    "Broad-spectrum protein kinase inhibitor"
+  ],
+  "context": {
+    "cell_line": "U2OS",
+    "dose": null,
+    "treatment_duration": null
+  }
+}

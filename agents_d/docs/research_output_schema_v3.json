@@ -1,0 +1,236 @@
+{
+  "$defs": {
+    "CompoundIdentification": {
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "source_ids": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Source Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "summary",
+        "source_ids"
+      ],
+      "title": "CompoundIdentification",
+      "type": "object"
+    },
+    "CompoundResearchAndAnalysis": {
+      "additionalProperties": false,
+      "properties": {
+        "findings": {
+          "items": {
+            "$ref": "#/$defs/SourceFinding"
+          },
+          "title": "Findings",
+          "type": "array"
+        },
+        "research_gaps": {
+          "minLength": 1,
+          "title": "Research Gaps",
+          "type": "string"
+        }
+      },
+      "required": [
+        "findings",
+        "research_gaps"
+      ],
+      "title": "CompoundResearchAndAnalysis",
+      "type": "object"
+    },
+    "MorphologyPrediction": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "change": {
+          "minLength": 1,
+          "title": "Change",
+          "type": "string"
+        },
+        "basis": {
+          "minLength": 1,
+          "title": "Basis",
+          "type": "string"
+        },
+        "applicability": {
+          "minLength": 1,
+          "title": "Applicability",
+          "type": "string"
+        },
+        "source_ids": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Source Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "change",
+        "basis",
+        "applicability",
+        "source_ids"
+      ],
+      "title": "MorphologyPrediction",
+      "type": "object"
+    },
+    "ObservationGuidance": {
+      "additionalProperties": false,
+      "properties": {
+        "hypothesis_id": {
+          "minLength": 1,
+          "title": "Hypothesis Id",
+          "type": "string"
+        },
+        "where_to_look": {
+          "minLength": 1,
+          "title": "Where To Look",
+          "type": "string"
+        },
+        "what_to_check": {
+          "minLength": 1,
+          "title": "What To Check",
+          "type": "string"
+        },
+        "how_to_compare": {
+          "minLength": 1,
+          "title": "How To Compare",
+          "type": "string"
+        }
+      },
+      "required": [
+        "hypothesis_id",
+        "where_to_look",
+        "what_to_check",
+        "how_to_compare"
+      ],
+      "title": "ObservationGuidance",
+      "type": "object"
+    },
+    "ResearchSource": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Title"
+        },
+        "url": {
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "url"
+      ],
+      "title": "ResearchSource",
+      "type": "object"
+    },
+    "SourceFinding": {
+      "additionalProperties": false,
+      "properties": {
+        "finding": {
+          "minLength": 1,
+          "title": "Finding",
+          "type": "string"
+        },
+        "reported_conditions": {
+          "minLength": 1,
+          "title": "Reported Conditions",
+          "type": "string"
+        },
+        "source_ids": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "finding",
+        "reported_conditions",
+        "source_ids"
+      ],
+      "title": "SourceFinding",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Compound identification, source findings, morphology hypotheses, and observation guidance.",
+  "properties": {
+    "sample_id": {
+      "minLength": 1,
+      "title": "Sample Id",
+      "type": "string"
+    },
+    "compound_identification": {
+      "$ref": "#/$defs/CompoundIdentification"
+    },
+    "compound_research_and_analysis": {
+      "$ref": "#/$defs/CompoundResearchAndAnalysis"
+    },
+    "morphology_hypotheses": {
+      "items": {
+        "$ref": "#/$defs/MorphologyPrediction"
+      },
+      "title": "Morphology Hypotheses",
+      "type": "array"
+    },
+    "observation_guidance": {
+      "items": {
+        "$ref": "#/$defs/ObservationGuidance"
+      },
+      "title": "Observation Guidance",
+      "type": "array"
+    },
+    "sources": {
+      "items": {
+        "$ref": "#/$defs/ResearchSource"
+      },
+      "title": "Sources",
+      "type": "array"
+    }
+  },
+  "required": [
+    "sample_id",
+    "compound_identification",
+    "compound_research_and_analysis",
+    "morphology_hypotheses",
+    "observation_guidance",
+    "sources"
+  ],
+  "title": "ResearchResultV3",
+  "type": "object"
+}

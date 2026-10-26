@@ -1,0 +1,160 @@
+{
+  "schema_version": "2",
+  "sample_id": "SYNTHETIC_TEST",
+  "identity_summary": "SYNTHETIC_PRIVATE_COMPOUND identity fixture only.",
+  "sources": [
+    {
+      "source_id": "synthetic_identity",
+      "url": "https://example.invalid/identity",
+      "retrieved_at": "2000-01-01T00:00:00Z",
+      "cache_ref": null,
+      "kind": "mock",
+      "title": null
+    },
+    {
+      "source_id": "synthetic_article",
+      "url": "https://example.invalid/article",
+      "retrieved_at": "2000-01-01T00:00:00Z",
+      "cache_ref": null,
+      "kind": "mock",
+      "title": null
+    }
+  ],
+  "facts": [
+    {
+      "fact_id": "synthetic_direct",
+      "statement": "Invented abstract reports larger nuclear outlines.",
+      "source_ids": [
+        "synthetic_article"
+      ],
+      "evidence_level": "direct_morphology",
+      "conditions": "Invented study: different synthetic cells, unknown time and dose.",
+      "limitations": "Synthetic evidence; conditions differ from the sample.",
+      "origin": "literature",
+      "compound_scope": "exact_compound",
+      "access": "abstract"
+    },
+    {
+      "fact_id": "synthetic_prior",
+      "statement": "SYNTHETIC_PRIVATE_MOA",
+      "source_ids": [],
+      "evidence_level": "provided_moa",
+      "conditions": "Supplied sample metadata; no assay was read.",
+      "limitations": "User-provided prior, not independently established by a paper.",
+      "origin": "provided_moa",
+      "compound_scope": "exact_compound",
+      "access": "input"
+    }
+  ],
+  "hypotheses": [
+    {
+      "hypothesis_id": "direct_check",
+      "change": "Larger nuclear outlines may be visible.",
+      "where_to_check": [
+        "DNA overview",
+        "DNA local view"
+      ],
+      "applicable_conditions": "Synthetic test cells and synthetic dose; treatment duration is unknown.",
+      "uncertainty": "Synthetic fixture; transfer to the supplied duration cannot be evaluated.",
+      "fact_ids": [
+        "synthetic_direct"
+      ],
+      "disconfirming_observation": "Nuclear outlines are the same size or smaller in treatment.",
+      "basis": "direct_literature",
+      "rationale": "SYNTHETIC_PRIVATE_COMPOUND was described in an invented abstract; test fixture only.",
+      "verification": {
+        "comparison": "Compare treatment and control in matched DNA overviews, retaining field differences.",
+        "image_checks": [
+          "Inspect nuclear outlines and compare visible object sizes in both fields."
+        ],
+        "cp_checks": [
+          {
+            "compartment": "Nuclei",
+            "channel": "DNA",
+            "family": "AreaShape",
+            "interpretation": "Use area measurements as corroboration; well values cannot confirm a crop."
+          }
+        ],
+        "supporting_observation": "Nuclear outlines are consistently larger in treatment than matched controls.",
+        "not_assessable_when": [
+          "DNA images are absent, blurred or saturated.",
+          "Fields disagree without a consistent directional difference."
+        ]
+      }
+    },
+    {
+      "hypothesis_id": "inferred_check",
+      "change": "More rounded object outlines may be visible.",
+      "where_to_check": [
+        "DNA overview",
+        "DNA local view"
+      ],
+      "applicable_conditions": "Synthetic test cells and synthetic dose; treatment duration is unknown.",
+      "uncertainty": "Synthetic fixture; transfer to the supplied duration cannot be evaluated.",
+      "fact_ids": [
+        "synthetic_prior"
+      ],
+      "disconfirming_observation": "Treatment outlines remain elongated to the same degree as controls.",
+      "basis": "moa_inference",
+      "rationale": "SYNTHETIC_PRIVATE_MOA may affect a structural process and thereby alter object outlines; invented reasoning.",
+      "verification": {
+        "comparison": "Compare treatment and control in matched DNA overviews, retaining field differences.",
+        "image_checks": [
+          "Compare outline roundness without treating intensity changes as shape."
+        ],
+        "cp_checks": [
+          {
+            "compartment": "Nuclei",
+            "channel": "DNA",
+            "family": "AreaShape",
+            "interpretation": "Use area measurements as corroboration; well values cannot confirm a crop."
+          }
+        ],
+        "supporting_observation": "More treatment outlines are rounded across matched fields.",
+        "not_assessable_when": [
+          "DNA images are absent, blurred or saturated.",
+          "Fields disagree without a consistent directional difference."
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "Entirely synthetic test fixture, not biological evidence."
+  ],
+  "identity_context": {
+    "status": "verified",
+    "source_ids": [
+      "synthetic_identity"
+    ],
+    "context": {
+      "cell_line": "Synthetic test cells",
+      "dose": "synthetic dose",
+      "treatment_duration": null,
+      "notes": []
+    },
+    "unknown_conditions": [
+      "treatment_duration"
+    ],
+    "conflicts": []
+  },
+  "literature_review": {
+    "status": "direct_observations_found",
+    "search_summary": "Invented literature read for tests.",
+    "fact_ids": [
+      "synthetic_direct"
+    ],
+    "limitations": [
+      "Only an invented abstract."
+    ]
+  },
+  "mechanism_review": {
+    "status": "hypotheses_proposed",
+    "fact_ids": [
+      "synthetic_prior"
+    ],
+    "summary": "Separate MOA-to-structure-to-appearance reasoning.",
+    "limitations": [
+      "No biological conclusion can be drawn."
+    ]
+  }
+}

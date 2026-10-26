@@ -1,0 +1,22 @@
+{
+  "provider": "openai_compatible",
+  "model": "local-vlm",
+  "base_url": "http://127.0.0.1:8000/v1",
+  "api_key_env": "LOCAL_MODEL_API_KEY",
+  "reasoning_effort": "none",
+  "research_max_turns": 50,
+  "observation_max_turns": 30,
+  "max_output_tokens": 8192,
+  "max_input_tokens": 49152,
+  "max_tool_calls": 100,
+  "web_search": false,
+  "web_max_calls": 0,
+  "pubchem_requests_per_second": 2,
+  "input_usd_per_million": 0,
+  "output_usd_per_million": 0,
+  "web_search_usd_per_call": 0.01,
+  "budget_usd": 1,
+  "request_timeout_seconds": 600,
+  "local_context_margin_tokens": 1024,
+  "local_extra_body": {}
+}

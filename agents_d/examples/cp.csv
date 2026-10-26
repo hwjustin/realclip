@@ -1,0 +1,5 @@
+feature_id,feature_name,compartment,channel,family,role,value,unit,scope
+nuclear_area_control,AreaShape_Area,Nuclei,DNA,AreaShape,control,50,pixel^2,synthetic_well
+nuclear_area_treatment,AreaShape_Area,Nuclei,DNA,AreaShape,treatment,60,pixel^2,synthetic_well
+nuclear_texture_control,Texture_Contrast,Nuclei,DNA,Texture,control,0.2,arbitrary,synthetic_well
+nuclear_texture_treatment,Texture_Contrast,Nuclei,DNA,Texture,treatment,0.3,arbitrary,synthetic_well

@@ -1,0 +1,83 @@
+{
+  "schema_version": "1",
+  "sample_id": "SYNTHETIC_DEMO",
+  "compound": {
+    "name": "SYNTHETIC_DEMO_COMPOUND"
+  },
+  "known_moa": [],
+  "context": {
+    "cell_line": "synthetic fixture; no biological cells",
+    "dose": null,
+    "treatment_duration": null,
+    "notes": [
+      "Software test fixture only. Images are geometric drawings, and CP values are invented.",
+      "Do not use this sample as biological evidence or send its invented identity to public databases."
+    ]
+  },
+  "images": [
+    {
+      "image_id": "control_dna_f1",
+      "path": "images/control_dna_f1.png",
+      "role": "control",
+      "channel": "DNA",
+      "field": "1",
+      "view": "overview",
+      "well_id": "synthetic_control_well"
+    },
+    {
+      "image_id": "treatment_dna_f1",
+      "path": "images/treatment_dna_f1.png",
+      "role": "treatment",
+      "channel": "DNA",
+      "field": "1",
+      "view": "overview",
+      "well_id": "synthetic_treatment_well"
+    },
+    {
+      "image_id": "control_dna_f2",
+      "path": "images/control_dna_f2.png",
+      "role": "control",
+      "channel": "DNA",
+      "field": "2",
+      "view": "overview",
+      "well_id": "synthetic_control_well"
+    },
+    {
+      "image_id": "treatment_dna_f2",
+      "path": "images/treatment_dna_f2.png",
+      "role": "treatment",
+      "channel": "DNA",
+      "field": "2",
+      "view": "overview",
+      "well_id": "synthetic_treatment_well"
+    }
+  ],
+  "cp_file": "cp.csv",
+  "cp_preprocessing": "SYNTHETIC fixture values only; not biological measurements.",
+  "cp_metadata": {
+    "value_kind": "raw",
+    "normalization_reference": null,
+    "comparison_context": "Same invented fixture setup for both roles.",
+    "aggregation_method": "Invented well summary for a software test, not measured cells.",
+    "within_feature_order_preserved": true,
+    "quality_notes": [
+      "SYNTHETIC example only; values and images are invented."
+    ],
+    "features": [
+      {
+        "feature_name": "AreaShape_Area",
+        "definition": "Invented fixture area-like measurement; no biological applicability.",
+        "scale": null,
+        "raw_unit": "pixel^2",
+        "higher_value_meaning": "Larger synthetic area-like value."
+      },
+      {
+        "feature_name": "Texture_Contrast",
+        "definition": "Invented fixture texture-like measurement; no biological applicability.",
+        "scale": "Fictional scale, not a real CellProfiler setting.",
+        "raw_unit": "arbitrary",
+        "higher_value_meaning": "Larger synthetic texture-like value."
+      }
+    ]
+  }
+}
